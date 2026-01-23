@@ -15,6 +15,9 @@ namespace Robi_App.Controllers
         {
             return View();
         }
-
+        public IActionResult Error ()
+        {
+            return View();
+        }
     }
 }
