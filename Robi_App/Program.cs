@@ -15,8 +15,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IStoreService , StoreService>(); 
-
+builder.Services.AddScoped<IStoreService , StoreService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>(); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -11,7 +11,7 @@ namespace Robi_App.Data
         {
 
         }
-
+        public DbSet<Invoice> Invoices { get; set; }    
         public DbSet<Store> Stores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

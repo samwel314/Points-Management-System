@@ -1,45 +1,49 @@
 ﻿@model Store
-<div class="card shadow border-1 mt-4">
-    <div class="card-header bg-light bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-bg-light py-2 fs-2 fw-bold"><i class="bi bi-pencil-square"></i> Update @Model.Title Store !</h2>
-            </div>
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-1 rounded-3">
+
+        <!-- Header -->
+        <div class="card-header bg-warning bg-gradient py-3 text-center">
+            <h2 class="fs-2 fw-bold text-white">
+                <i class="bi bi-pencil-square me-2"></i> Update @Model.Title Store
+            </h2>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <form method="post" asp-action="Update" class="row">
-            <input asp-for="Id" hidden disabled/>
-            <div class="border p-3">
-                <div class="form-floating  py-2 col-12">
-                    <input asp-for="Title" class="form-control fw-bold border-1 shadow " />
-                    <label asp-for="Title" class="ms-2 fs-4 fw-bold "> </label>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+            <form method="post" asp-action="Update" class="row g-3">
+
+                <input asp-for="Id" type="hidden" />
+
+                <!-- Title -->
+                <div class="form-floating col-12">
+                    <input asp-for="Title" class="form-control fw-bold border-1 shadow-sm" placeholder="Store Title" />
+                    <label asp-for="Title" class="ms-2 fw-bold fs-5">Store Title</label>
                     <span asp-validation-for="Title" class="text-danger fw-bold"></span>
                 </div>
-                <div class="form-floating  py-2 col-12 ">
-                    <input asp-for="Location" class="form-control fw-bold border-1 shadow " />
-                    <label asp-for="Location" class="ms-2 fs-4 fw-bold"> </label>
+
+                <!-- Location -->
+                <div class="form-floating col-12">
+                    <input asp-for="Location" class="form-control fw-bold border-1 shadow-sm" placeholder="Store Location" />
+                    <label asp-for="Location" class="ms-2 fw-bold fs-5">Store Location</label>
                     <span asp-validation-for="Location" class="text-danger fw-bold"></span>
                 </div>
 
-                <div class="row pt-2">
-                    <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-outline-warning border fw-bold  form-control">Update Store </button>
-
-                    </div>
-                    <div class="col-6 col-md-3 ">
-                        <a asp-controller="Store" asp-action="Index" class="btn btn-outline-dark border fw-bold form-control">Back To Stores</a>
-                    </div>
+                <!-- Buttons -->
+                <div class="col-12 d-flex justify-content-between flex-wrap mt-3 gap-2">
+                    <button type="submit" class="btn btn-warning fw-bold flex-grow-1">
+                        <i class="bi bi-pencil-square me-1"></i> Update Store
+                    </button>
+                    <a asp-controller="Store" asp-action="Index" class="btn btn-outline-dark fw-bold flex-grow-1 text-center">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back To Stores
+                    </a>
                 </div>
 
-            </div>
-
-        </form>
+            </form>
+        </div>
     </div>
 </div>
-
-
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

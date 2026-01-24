@@ -1,0 +1,66 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Robi_App.Data;
+using Robi_App.Models;
+using Robi_App.Models.ViewModels;
+
+namespace Robi_App.Services.Implementation
+{
+    public class InvoiceService : IInvoiceService
+    {
+        private readonly ApplicationDbContext _db;
+        
+        public InvoiceService(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
+        public void CreateInvoice(CreateUpdateInvoiceVM model)
+        {
+            var invoiceToDB = new Invoice()
+            {
+                Code = model.Code,
+                UserId = model.UserId,  
+                StoreId = model.StoreId,    
+            }; 
+            _db.Invoices.Add(invoiceToDB);      
+            _db.SaveChanges();      
+        }
+
+        public CustomerProfileVM GetCustomerProfile(string Id)
+        {
+            var data = new CustomerProfileVM()
+            {
+                CustomerId = Id,
+                Invoices = _db.Invoices.Where(i => i.UserId == Id).Select(i => new ShowInvoiceVM
+                {
+                    Points = i.Points,
+                    Id = i.Id,
+                    code = i.Code,
+                    storeName = i.Store.Title,
+                    Date = i.CreatedAt.ToShortDateString() , 
+                }).ToList(),
+                TotalPoints = _db.Invoices.Where(i => i.UserId == Id).Sum(i => i.Points)
+            };
+            return data;
+        }
+
+        public Invoice ? GetInvoiceToUpdate(int Id ,  bool tracked)
+        {
+            var query = _db.Invoices.AsQueryable(); 
+            if (!tracked)
+                query = query.AsNoTracking();   
+           return query.Where(inv=> inv.Id == Id)    
+            .FirstOrDefault();
+        }
+
+        public bool IsCodeExisting(string code)
+        {
+            return _db.Invoices.Any(x => x.Code == code);   
+        }
+
+        public void Save()
+        {
+            _db.SaveChanges();  
+        }
+    }
+}

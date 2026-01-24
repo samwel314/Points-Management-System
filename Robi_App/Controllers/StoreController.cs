@@ -32,7 +32,10 @@ namespace Robi_App.Controllers
             if (store.Id != 0)
             {
                 TempData["Message"] = "Some Error With Data !";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home" , new
+                {
+                    statusCode = 400
+                });
             }
             _service.AddStore(store);   
             return RedirectToAction("Index");
@@ -44,7 +47,10 @@ namespace Robi_App.Controllers
             if (store is null)
             {
                 TempData["Message"] = "Sorry ! This Store Not Found";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
             }
 
             return View(store); 
@@ -58,7 +64,10 @@ namespace Robi_App.Controllers
             if ( !_service.StoreExists(store.Id))
             {
                 TempData["Message"] = "Sorry ! This Store Not Found";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home" ,  new
+                {
+                    statusCode = 404
+                });
             }
             _service.UpdateStore(store);    
             return RedirectToAction("Index");   
@@ -70,7 +79,10 @@ namespace Robi_App.Controllers
             if (store is null)
             {
                 TempData["Message"] = "Sorry ! This Store Not Found";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
             }
             return View(store); 
         }

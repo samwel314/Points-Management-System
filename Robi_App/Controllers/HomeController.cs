@@ -15,8 +15,9 @@ namespace Robi_App.Controllers
         {
             return View();
         }
-        public IActionResult Error ()
+        public IActionResult Error (int statusCode)
         {
+            Response.StatusCode = statusCode;   
             return View();
         }
     }
