@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/Robi_App.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
-<body>
+<body >
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="light">
             <div class="container-fluid">
@@ -33,9 +33,9 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item fw-bold" asp-controller="Store" asp-action="Index"> <i class="bi bi-1-circle-fill"></i> Manage Stores</a>
-                                <a class="dropdown-item fw-bold" asp-controller="Store" asp-action="Index"><i class="bi bi-2-circle-fill"></i> Manage Stores</a>
-                                <a class="dropdown-item fw-bold" asp-controller="Store" asp-action="Index"><i class="bi bi-3-circle-fill"></i> Manage Stores</a>
-                            </ul>
+                                <a class="dropdown-item fw-bold" asp-controller="Invoice" asp-action="Index"><i class="bi bi-2-circle-fill"></i> Manage Invoices</a>
+@*                                 <a class="dropdown-item fw-bold" asp-controller="Store" asp-action="Index"><i class="bi bi-3-circle-fill"></i> Manage Stores</a>
+ *@                            </ul>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -43,7 +43,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container clasflex-fill">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

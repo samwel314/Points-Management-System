@@ -24,7 +24,33 @@ namespace Robi_App.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var Data = _invoiceService.showInvoices();      
+            return View(Data);
+        }
+
+        public IActionResult UpdatePoints(ShowInvoiceVM model)
+        {
+            var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true); 
+            if (invoicefromDB is null  )
+            {
+                TempData["Message"] = "This Invoice Not Found !";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+            if (model.Points < 0)
+                return RedirectToAction("Index");
+
+            invoicefromDB.Points = model.Points;
+
+            // if admin set it with 0 points allow him to show it agene with zero invoices 
+            if (model.Points != 0)
+                invoicefromDB.IsReviewed = true;
+            else
+                invoicefromDB.IsReviewed = false;   
+                _invoiceService.Save(); 
+            return RedirectToAction ("Index");  
         }
         // Client 
         public IActionResult Create() 

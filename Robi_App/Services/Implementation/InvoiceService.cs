@@ -62,5 +62,18 @@ namespace Robi_App.Services.Implementation
         {
             _db.SaveChanges();  
         }
+
+        public IEnumerable<ShowInvoiceVM> showInvoices()
+        {
+            return _db.Invoices.Select (x => new ShowInvoiceVM { 
+            Id = x.Id,  
+            code=x.Code,    
+            storeName =x.Store.Title,   
+            UserName = x.User.UserName!,
+            Phone = x.User.UserName!,
+            Points = x.Points,
+            Date = x.CreatedAt.ToShortDateString()  
+            } ).ToList();
+        }
     }
 }

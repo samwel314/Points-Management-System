@@ -1,0 +1,86 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-10">
+
+            <div class="card shadow border-0">
+                <div class="card-body p-4 p-md-5">
+
+                    <h4 class="text-center fw-bold mb-1">Create Account</h4>
+                    <p class="text-center text-muted mb-4">
+                        Register to access the system
+                    </p>
+
+                    <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+
+                        <div class="row g-3">
+                            <!-- User Type -->
+
+                            <div class="col-md-6">
+                                <label class="form-label">Account Type</label>
+                                <select class="form-select">
+                                    <option selected disabled>Choose account type</option>
+                                    <option>Customer</option>
+                                    <option>Store Owner</option>
+                                    <option>Admin</option>
+                                </select>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="col-md-6">
+                                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                                <input asp-for="Input.PhoneNumber"
+                                       class="form-control"
+                                       placeholder="01XXXXXXXXX" />
+                                <span asp-validation-for="Input.PhoneNumber"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-6">
+                                <label asp-for="Input.Password" class="form-label"></label>
+                                <input asp-for="Input.Password"
+                                       class="form-control"
+                                       placeholder="Password" />
+                                <span asp-validation-for="Input.Password"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="col-md-6">
+                                <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                                <input asp-for="Input.ConfirmPassword"
+                                       class="form-control"
+                                       placeholder="Confirm Password" />
+                                <span asp-validation-for="Input.ConfirmPassword"
+                                      class="text-danger small"></span>
+                            </div>
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100 mt-4 py-2 fw-bold">
+                            Create Account
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

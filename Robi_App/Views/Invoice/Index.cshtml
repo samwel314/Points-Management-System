@@ -1,4 +1,110 @@
-﻿
+﻿@model List<ShowInvoiceVM>
+@{
+    int idCount = 0 ; 
+}
+<div class="container mt-4">
+
+    <h5 class="text-center mb-3">
+        <i class="bi bi-file-earmark-text"></i> All Invoices
+    </h5>
+    <div class="row">
+        <!-- Invoice Card -->
+        @foreach (var info in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold">
+                                <i class="bi bi-receipt"></i> @info.code
+                            </span>
+                            <span class="badge bg-success">@info.Points Points</span>
+                        </div>
+
+                        <p class="mb-1 text-muted">
+                            <i class="bi bi-shop"></i> Store: @info.storeName
+                        </p>
+
+                        <p class="mb-1 text-muted">
+                            <i class="bi bi-person-circle"></i> User: @info.UserName
+                        </p>
+                        <p class="mb-1 text-muted">
+                            <i class="bi bi-telephone"></i>
+                            @info.Phone
+                        </p>
+                        <p class="mb-1 text-muted">
+                            <i class="bi bi-calendar-event"></i> Date: @info.Date
+                        </p>
+
+                        <div class="d-grid mt-2">
+                            <button class="btn btn-outline-primary btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#@(idCount)editPointsModal">
+                                <i class="bi bi-pencil-square"></i> Edit Points
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="@(idCount)editPointsModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Edit Invoice Points</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="post" asp-action="UpdatePoints" id="@info.Id"  >
+                                <input name="Id" value="@info.Id" hidden />
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-upc-scan"></i> Invoice Code</label>
+                                    <input asp-for="@info.code" class="form-control"  readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-shop"></i> Store</label>
+                                    <input asp-for="@info.storeName" class="form-control" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-person-circle"></i> User</label>
+                                    <input asp-for="@info.UserName" class="form-control" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-stars"></i> Points</label>
+                                    <input type="number" name="Points" value="@info.Points" class="form-control" min="0"  >
+                                </div>
+                                <div class="modal-footer d-grid">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-check-circle"></i> Save Points
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                 
+
+                    </div>
+                </div>
+            </div>
+            idCount++; 
+        }
+    
 
 
-<h1>hELLO In Invoices </h1>
+    </div>
+
+
+</div>
+
+<!--جديد  Modal تعديل النقاط -->
+<!--جديد اضافة عميل     -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
