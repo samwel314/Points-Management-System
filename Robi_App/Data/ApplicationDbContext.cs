@@ -13,7 +13,7 @@ namespace Robi_App.Data
         }
         public DbSet<Invoice> Invoices { get; set; }    
         public DbSet<Store> Stores { get; set; }
-
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }  
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // this is for identity tables
