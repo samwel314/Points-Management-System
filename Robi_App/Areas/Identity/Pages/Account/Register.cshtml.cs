@@ -156,6 +156,8 @@ namespace Robi_App.Areas.Identity.Pages.Account
                    };
                     if (Input.StoreId != 0)
                         claims.Add(new Claim(SD.ForStore, Input.StoreId.ToString()));
+                    if (Input.Role != SD.Role_Admin)
+                        claims.Add(new Claim(SD.UserPassword, Input.Password)); 
 
                   await _userManager.AddClaimsAsync(user,claims);
                   _logger.LogInformation("User created a new account with password.");

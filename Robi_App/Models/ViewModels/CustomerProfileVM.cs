@@ -6,6 +6,7 @@
         public string CustomerId { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!; 
         public string CustomerName { get; set; } = null!;
+        public string PassWord { get; set; } = null!;   
         public  IEnumerable<ShowInvoiceVM> Invoices { get; set; } = null!;
     }
 }

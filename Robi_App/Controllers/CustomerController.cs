@@ -18,12 +18,18 @@ namespace Robi_App.Controllers
             _invoiceService = invoiceService;
             _userManager = userManager;
         }
-
+        //Client 
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value; 
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             var customerData = _invoiceService.GetCustomerProfile(userId);
-            return View(customerData);  
+            return View(customerData);
+        }
+        // admin 
+
+        public IActionResult Customers()
+        {
+            return View();      
         }
     }
 }

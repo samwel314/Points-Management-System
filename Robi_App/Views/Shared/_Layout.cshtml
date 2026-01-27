@@ -34,8 +34,8 @@
                             <ul class="dropdown-menu">
                                 <a class="dropdown-item fw-bold" asp-controller="Store" asp-action="Index"> <i class="bi bi-1-circle-fill"></i> Manage Stores</a>
                                 <a class="dropdown-item fw-bold" asp-controller="Invoice" asp-action="Index"><i class="bi bi-2-circle-fill"></i> Manage Invoices</a>
-@*                                 <a class="dropdown-item fw-bold" asp-controller="Store" asp-action="Index"><i class="bi bi-3-circle-fill"></i> Manage Stores</a>
- *@                            </ul>
+                                <a class="dropdown-item fw-bold" asp-controller="Customer" asp-action="Customers"><i class="bi bi-3-circle-fill"></i> Manage Customers</a>
+                            </ul>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -43,7 +43,7 @@
             </div>
         </nav>
     </header>
-    <div class="container clasflex-fill">
+    <div class="container flex-fill">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
