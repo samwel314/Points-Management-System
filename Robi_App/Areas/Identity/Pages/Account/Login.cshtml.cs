@@ -64,7 +64,7 @@ namespace Robi_App.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [RegularExpression(@"^01[0-2,5]{1}[0-9]{8}$",
+           [RegularExpression(@"^01[0-2,5]{1}[0-9]{8}$",
            ErrorMessage = "Invalid phone number")]
             [Required]
             public string Email { get; set; }

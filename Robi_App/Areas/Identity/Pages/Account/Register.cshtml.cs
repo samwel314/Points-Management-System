@@ -2,25 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Robi_App.Services;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Robi_App.Areas.Identity.Pages.Account
 {
+ //   [Authorize (Policy = SD.Role_Admin)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -29,13 +34,15 @@ namespace Robi_App.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IStoreService _storeService; 
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender
+            , IStoreService storeService )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +50,7 @@ namespace Robi_App.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _storeService = storeService;   
         }
 
         /// <summary>
@@ -74,11 +82,17 @@ namespace Robi_App.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+
+            [Display(Name = "Full Name")]
+            [Required(ErrorMessage = "Enter User Full Name ")]
+            public string FullName { get; set; }    
             [RegularExpression(@"^01[0-2,5]{1}[0-9]{8}$",
               ErrorMessage = "Invalid phone number")]
             [Required]
-            public string PhoneNumber { get; set; } 
-
+            public string PhoneNumber { get; set; }
+            [Required (ErrorMessage = "Select User Role")]
+            public string Role { get; set; }
+            
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -97,13 +111,27 @@ namespace Robi_App.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public int StoreId { get; set; }    
+
+            public IEnumerable <SelectListItem> Stores { get; set; }    
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            Input = new InputModel()
+            {
+                Stores = _storeService.GetStores(false)
+                .Select(st => new SelectListItem
+                {
+                    Text = st.Title,
+                    Value = st.Id.ToString()
+                }).ToList()
+            } ;
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -120,7 +148,18 @@ namespace Robi_App.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    // add claims 
+                    // for all users
+                    var claims = new List<Claim>(){
+                       new Claim(SD.UserName, Input.FullName) ,
+                       new Claim(Input.Role , Input.Role) ,
+                   };
+                    if (Input.StoreId != 0)
+                        claims.Add(new Claim(SD.ForStore, Input.StoreId.ToString()));
+
+                  await _userManager.AddClaimsAsync(user,claims);
+                  _logger.LogInformation("User created a new account with password.");
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -140,16 +179,22 @@ namespace Robi_App.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                      //  await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
+                } 
             }
 
+            Input.Stores = _storeService.GetStores(false)
+                .Select(st => new SelectListItem
+                {
+                    Text = st.Title,
+                    Value = st.Id.ToString()
+                }).ToList();
             // If we got this far, something failed, redisplay form
             return Page();
         }

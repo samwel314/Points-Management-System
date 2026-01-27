@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Register";
 }
-
 <div class="container my-4">
     <div class="row justify-content-center">
         <div class="col-xl-7 col-lg-8 col-md-10">
@@ -21,18 +20,16 @@
                         <div asp-validation-summary="ModelOnly"
                              class="text-danger mb-3"></div>
 
-
                         <div class="row g-3">
-                            <!-- User Type -->
 
+                            <!-- Full Name -->
                             <div class="col-md-6">
-                                <label class="form-label">Account Type</label>
-                                <select class="form-select">
-                                    <option selected disabled>Choose account type</option>
-                                    <option>Customer</option>
-                                    <option>Store Owner</option>
-                                    <option>Admin</option>
-                                </select>
+                                <label asp-for="Input.FullName" class="form-label"></label>
+                                <input asp-for="Input.FullName"
+                                       class="form-control"
+                                       placeholder="Full Name" />
+                                <span asp-validation-for="Input.FullName"
+                                      class="text-danger small"></span>
                             </div>
 
                             <!-- Phone -->
@@ -43,6 +40,28 @@
                                        placeholder="01XXXXXXXXX" />
                                 <span asp-validation-for="Input.PhoneNumber"
                                       class="text-danger small"></span>
+                            </div>
+
+                            <!-- Account Type -->
+                            <div class="col-md-6">
+                                <label class="form-label">Account Type</label>
+                                <select id="roleSelect"
+                                        asp-for="Input.Role"
+                                        asp-items="@SD.Roles"
+                                        class="form-select">
+                                    <option selected disabled>Choose account type</option>
+                                </select>
+                                <span asp-validation-for="Input.Role"></span>
+                            </div>
+
+                            <!-- Store (Employee only) -->
+                            <div class="col-md-6" id="employeeOptions" style="display:none;">
+                                <label class="form-label">Store Employee</label>
+                                <select asp-for="Input.StoreId"
+                                        asp-items="@Model.Input.Stores"
+                                        class="form-select">
+                                    <option disabled selected>For Store</option>
+                                </select>
                             </div>
 
                             <!-- Password -->
@@ -83,4 +102,16 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        const roleSelect = document.getElementById('roleSelect');
+        const employeeOptions = document.getElementById('employeeOptions');
+
+        roleSelect.addEventListener('change', function () {
+            if (roleSelect.value === 'Employee') {
+                employeeOptions.style.display = 'block';
+            } else {
+                employeeOptions.style.display = 'none';
+            }
+        });
+    </script>
 }

@@ -7,6 +7,7 @@ using Robi_App.Models.ViewModels;
 using Robi_App.Services;
 using System.Security.AccessControl;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Robi_App.Controllers
 {
@@ -15,13 +16,15 @@ namespace Robi_App.Controllers
     {
         private readonly IStoreService _storeService; 
         private readonly IInvoiceService _invoiceService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public InvoiceController(IStoreService storeService, IInvoiceService invoiceService)
+        public InvoiceController(IStoreService storeService, IInvoiceService invoiceService, IAuthorizationService authorizationService)
         {
             _storeService = storeService;
             _invoiceService = invoiceService;
+            _authorizationService = authorizationService;
         }
-
+        // admin
         public IActionResult Index()
         {
             var Data = _invoiceService.showInvoices();      
@@ -95,19 +98,26 @@ namespace Robi_App.Controllers
             return RedirectToAction("index" , "Customer"); 
         }
 
-        public IActionResult Update (int Id)
+        public async Task<IActionResult> Update (int Id)
         {
             var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(Id , false);
             // her all users can update we will implement resource-based
             // Authorization
-            if (invoiceFromDB is null || !User.Identity!.IsAuthenticated    )
+            if (invoiceFromDB is null     )
             {
-                TempData["Message"] = "You May Not Allowed To Do This Action !" +
-                    "  This Invoice Not Found !";
+                TempData["Message"] = 
+                    "This Invoice Not Found !";
                 return RedirectToAction("Error", "Home" , new 
                 {
                     statusCode = 404
                 });
+            }
+
+            var authResult = await _authorizationService
+                .AuthorizeAsync(User, invoiceFromDB, "CanUpdateInvoice");
+            if (!authResult.Succeeded)
+            {
+                return new ForbidResult(); 
             }
             CreateUpdateInvoiceVM viewModel = new CreateUpdateInvoiceVM()
             {
@@ -124,16 +134,9 @@ namespace Robi_App.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Update (CreateUpdateInvoiceVM model)
+        public async Task<IActionResult> Update (CreateUpdateInvoiceVM model)
         {
-            if (!User.Identity!.IsAuthenticated)
-            {
-                TempData["Message"] = "You May Not Allowed To Do This Action !";
-                return RedirectToAction("Error", "Home", new
-                {
-                    statusCode = 403
-                });
-            }
+            
             var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(model.Id , true);
 
             if (!ModelState.IsValid || invoiceFromDB is null)
@@ -145,6 +148,12 @@ namespace Robi_App.Controllers
                     {
                         statusCode = 404
                     });
+                }
+                var authResult = await _authorizationService
+               .AuthorizeAsync(User, invoiceFromDB, "CanUpdateInvoice");
+                if (!authResult.Succeeded)
+                {
+                    return new ForbidResult();
                 }
                 // in every case 
                 model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()

@@ -5,7 +5,7 @@ using Robi_App.Models;
 
 namespace Robi_App.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext 
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
