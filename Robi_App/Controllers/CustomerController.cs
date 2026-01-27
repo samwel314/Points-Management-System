@@ -38,7 +38,7 @@ namespace Robi_App.Controllers
         public IActionResult Show(string Id)
         {
             var customer =  _invoiceService.GetCustomerProfile(Id);
-            return View( "Index", customer);      
+            return View(customer);      
         }
     }
 }

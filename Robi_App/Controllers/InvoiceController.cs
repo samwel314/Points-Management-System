@@ -53,6 +53,8 @@ namespace Robi_App.Controllers
             else
                 invoicefromDB.IsReviewed = false;   
                 _invoiceService.Save(); 
+            if (model.CustomerId != null)
+                return RedirectToAction("Show" , "Customer" , new { Id = model.CustomerId });
             return RedirectToAction ("Index");  
         }
         // Client 

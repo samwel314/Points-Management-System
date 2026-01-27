@@ -28,9 +28,15 @@ namespace Robi_App.Services.Implementation
 
         public CustomerProfileVM GetCustomerProfile(string Id)
         {
+            var user = _db.ApplicationUsers.First(u => u.Id == Id);
+            if (user == null)
+                return null!;
+
             var data = new CustomerProfileVM()
             {
                 CustomerId = Id,
+                CustomerName = user.FullName , 
+                PhoneNumber = user.UserName! ,
                 Invoices = _db.Invoices.Where(i => i.UserId == Id).Select(i => new ShowInvoiceVM
                 {
                     Points = i.Points,
