@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Robi_App.Models;
 using Robi_App.Services;
 using System;
 using System.Collections.Generic;
@@ -28,18 +29,18 @@ namespace Robi_App.Areas.Identity.Pages.Account
  //   [Authorize (Policy = SD.Role_Admin)]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IStoreService _storeService; 
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender
             , IStoreService storeService )
@@ -148,19 +149,18 @@ namespace Robi_App.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    // add claims 
-                    // for all users
+                    user.FullName = Input.FullName; 
                     var claims = new List<Claim>(){
-                       new Claim(SD.UserName, Input.FullName) ,
                        new Claim(Input.Role , Input.Role) ,
                    };
                     if (Input.StoreId != 0)
                         claims.Add(new Claim(SD.ForStore, Input.StoreId.ToString()));
-                    if (Input.Role != SD.Role_Admin)
-                        claims.Add(new Claim(SD.UserPassword, Input.Password)); 
 
-                  await _userManager.AddClaimsAsync(user,claims);
-                  _logger.LogInformation("User created a new account with password.");
+                    if (Input.Role != SD.Role_Admin)
+                        user.TemporaryPassword = Input.Password;
+                    await _userManager.UpdateAsync(user);
+                    await _userManager.AddClaimsAsync(user,claims);
+                    _logger.LogInformation("User created a new account with password.");
 
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -201,11 +201,11 @@ namespace Robi_App.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
@@ -215,13 +215,13 @@ namespace Robi_App.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

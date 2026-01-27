@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Robi_App.Models;
 using System.Security.Claims;
 
 namespace Robi_App.Data.DBInitializer
@@ -7,9 +8,9 @@ namespace Robi_App.Data.DBInitializer
     public class DBInitializer : IDBInitializer
     {
 
-        UserManager<IdentityUser> _usermanager;
+        UserManager<ApplicationUser> _usermanager;
         ApplicationDbContext _db;
-        public DBInitializer(UserManager<IdentityUser> _usermanager , 
+        public DBInitializer(UserManager<ApplicationUser> _usermanager , 
         ApplicationDbContext _db)
         {
             this._usermanager = _usermanager;
@@ -31,24 +32,23 @@ namespace Robi_App.Data.DBInitializer
 
             }
             var appUser =
-                _db.Users.FirstOrDefault(u => u.UserName ==
+                _db.ApplicationUsers.FirstOrDefault(u => u.UserName ==
                 "01066389260");
             if (appUser is null)
             {
-                _usermanager.CreateAsync(new IdentityUser
+                _usermanager.CreateAsync(new ApplicationUser
                 {
                     UserName = "01066389260",
+                    FullName = "Romany Hany"
                 }, "R@Glc123").GetAwaiter().GetResult();
 
                 appUser =
-                   _db.Users.FirstOrDefault(u => u.UserName ==
+                   _db.ApplicationUsers.FirstOrDefault(u => u.UserName ==
                    "01066389260");
 
-                _usermanager.AddClaimsAsync(appUser!,
-                   new List<Claim>(){
-                       new Claim(SD.UserName, "Romany Hany") ,
-                       new Claim(SD.Role_Admin , SD.Role_Admin) ,
-                   }).GetAwaiter().GetResult(); 
+                _usermanager.AddClaimAsync(appUser!,
+                       new Claim(SD.Role_Admin , SD.Role_Admin) 
+                   ).GetAwaiter().GetResult(); 
             }
 
             return;

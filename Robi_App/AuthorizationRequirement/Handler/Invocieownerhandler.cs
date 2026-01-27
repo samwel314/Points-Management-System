@@ -7,9 +7,9 @@ namespace Robi_App.AuthorizationRequirement.Handler
     public class InvoiceOwnerhandler : AuthorizationHandler 
         <IsInvoiceOwnerRequirement, Invoice>
     {
-        protected readonly UserManager<IdentityUser> _userManager;
+        protected readonly UserManager<ApplicationUser> _userManager;
 
-        public InvoiceOwnerhandler(UserManager<IdentityUser> userManager)
+        public InvoiceOwnerhandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
