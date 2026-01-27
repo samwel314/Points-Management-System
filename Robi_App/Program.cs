@@ -29,7 +29,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IStoreService , StoreService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IDBInitializer, DBInitializer>();
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Authorization polices builder.Services.AddAuthorization(options =>
 

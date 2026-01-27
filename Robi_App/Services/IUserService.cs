@@ -4,6 +4,6 @@ namespace Robi_App.Services
 {
     public interface IUserService
     {
-      //  IEnumerable<CustomerProfileVM> GetAllCustomers(); 
+        Task<IEnumerable <CustomerProfileVM>> GetAllCustomers(); 
     }
 }

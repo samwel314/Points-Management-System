@@ -69,7 +69,7 @@ namespace Robi_App.Services.Implementation
             Id = x.Id,  
             code=x.Code,    
             storeName =x.Store.Title,   
-            UserName = x.User.UserName!,
+            UserName = _db.ApplicationUsers.First(u => u.Id == x.UserId)!.FullName,
             Phone = x.User.UserName!,
             Points = x.Points,
             Date = x.CreatedAt.ToShortDateString()  

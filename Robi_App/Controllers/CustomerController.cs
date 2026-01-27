@@ -13,11 +13,13 @@ namespace Robi_App.Controllers
     {
         private readonly IInvoiceService _invoiceService;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public CustomerController(IInvoiceService invoiceService, UserManager<ApplicationUser> userManager)
+        private readonly IUserService _userService; 
+        public CustomerController(IInvoiceService invoiceService,
+            UserManager<ApplicationUser> userManager , IUserService userService)
         {
             _invoiceService = invoiceService;
             _userManager = userManager;
+            _userService = userService;
         }
         //Client 
         public async Task<IActionResult> Index()
@@ -28,9 +30,15 @@ namespace Robi_App.Controllers
         }
         // admin 
 
-        public IActionResult Customers()
+        public async Task<IActionResult> Customers()
         {
-            return View();      
+            var Customers = await _userService.GetAllCustomers(); 
+            return View(Customers);      
+        }
+        public IActionResult Show(string Id)
+        {
+            var customer =  _invoiceService.GetCustomerProfile(Id);
+            return View( "Index", customer);      
         }
     }
 }
