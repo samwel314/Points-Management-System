@@ -1,48 +1,51 @@
 ﻿@model Store
 
-<div class="container mt-4">
+<div class="container mt-5">
+
     <div class="card shadow-sm border-1 rounded-3">
 
-        <!-- Card Header -->
-        <div class="card-header bg-light bg-gradient py-3 text-center">
-            <h2 class="fs-2 fw-bold text-primary">
-                <i class="bi bi-house-add-fill me-2"></i> Add New Store
+        <!-- رأس الكارد -->
+        <div class="card-header bg-light bg-gradient py-3 text-end" dir="rtl">
+            <h2 class="fs-2 fw-bold text-primary mb-0">
+                <i class="bi bi-house-add-fill ms-2"></i> إضافة فرع جديد
             </h2>
         </div>
 
-        <!-- Card Body -->
-        <div class="card-body p-4">
+        <!-- محتوى الكارد -->
+        <div class="card-body p-4" dir="rtl">
+
             <form method="post" asp-action="Add" class="row g-3">
 
-                <!-- Store Title -->
+                <!-- اسم الفرع -->
                 <div class="form-floating col-12">
-                    <input asp-for="Title" class="form-control border-1 shadow-sm fw-bold" placeholder="Store Title" />
-                    <label asp-for="Title" class="ms-2 fw-bold fs-5">
-                        Store Title
+                    <input asp-for="Title" class="form-control border-1 shadow-sm fw-bold text-end" placeholder="اسم الفرع" />
+                    <label asp-for="Title" class="fw-bold fs-5 text-end">
+                        اسم الفرع
                     </label>
                     <span asp-validation-for="Title" class="text-danger fw-bold"></span>
                 </div>
 
-                <!-- Store Location -->
+                <!-- موقع الفرع -->
                 <div class="form-floating col-12">
-                    <input asp-for="Location" class="form-control border-1 shadow-sm fw-bold" placeholder="Store Location" />
-                    <label asp-for="Location" class="ms-2 fw-bold fs-5">
-                        Store Location
+                    <input asp-for="Location" class="form-control border-1 shadow-sm fw-bold text-end" placeholder="موقع الفرع" />
+                    <label asp-for="Location" class="fw-bold fs-5 text-end">
+                        موقع الفرع
                     </label>
                     <span asp-validation-for="Location" class="text-danger fw-bold"></span>
                 </div>
 
-                <!-- Buttons -->
-                <div class="col-12 d-flex justify-content-between flex-wrap mt-3">
+                <!-- الأزرار -->
+                <div class="col-12 d-flex justify-content-between flex-wrap mt-4">
                     <button type="submit" class="btn btn-primary fw-bold flex-grow-1 me-2 mb-2">
-                        <i class="bi bi-plus-circle me-1"></i> Add Store
+                        <i class="bi bi-plus-circle ms-1"></i> إضافة الفرع
                     </button>
                     <a asp-controller="Store" asp-action="Index" class="btn btn-outline-dark fw-bold flex-grow-1 ms-2 mb-2 text-center">
-                        <i class="bi bi-arrow-left-circle me-1"></i> Back To Stores
+                        <i class="bi bi-arrow-left-circle ms-1"></i> العودة للفروع
                     </a>
                 </div>
 
             </form>
+
         </div>
 
     </div>

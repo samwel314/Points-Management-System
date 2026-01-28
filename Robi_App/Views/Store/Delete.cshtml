@@ -1,10 +1,10 @@
-﻿
-@model Store
+﻿@model Store
 
-<div class="container mt-4">
+<div class="container mt-4" dir="rtl">
 
-    <!-- Card Preview (Optional) -->
+    <!-- بطاقة الفرع -->
     <div class="card shadow-sm border-1 rounded-3 p-3">
+
         <h5 class="fw-bold mb-2">
             <i class="bi bi-shop me-1"></i> @Model.Title
         </h5>
@@ -12,41 +12,49 @@
             <i class="bi bi-geo-alt me-1"></i> @Model.Location
         </p>
 
-        <!-- Delete Button triggers Modal -->
-        <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteStoreModal">
-            <i class="bi bi-file-x me-1"></i> Delete Store
-        </button>
-        <a asp-controller="Store" asp-action="Index" class="btn btn-outline-dark fw-bold ms-2">
-            <i class="bi bi-arrow-left-circle me-1"></i> Back To Stores
-        </a>
+        <!-- أزرار الحذف والعودة -->
+        <div class="d-flex flex-wrap gap-2">
+            <!-- زر الحذف -->
+            <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteStoreModal">
+                <i class="bi bi-file-x me-1"></i> حذف الفرع
+            </button>
+
+            <!-- زر العودة -->
+            <a asp-controller="Store" asp-action="Index" class="btn btn-outline-dark fw-bold">
+                <i class="bi bi-arrow-left-circle me-1"></i> العودة للفرع
+            </a>
+        </div>
     </div>
 
-    <!-- Modal -->
+    <!-- نافذة التأكيد للحذف -->
     <div class="modal fade" id="deleteStoreModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
+                <!-- رأس النافذة -->
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">
                         <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                        Confirm Delete
+                        تأكيد الحذف
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
 
+                <!-- محتوى النافذة -->
                 <div class="modal-body">
-                    Are you sure you want to delete <strong>@Model.Title</strong> Store?
+                    هل أنت متأكد أنك تريد حذف الفرع <strong>@Model.Title</strong>؟
                 </div>
 
+                <!-- أزرار التحكم -->
                 <div class="modal-footer d-flex flex-column flex-sm-row gap-2">
                     <form method="post" asp-action="Delete" class="flex-grow-1">
                         <input asp-for="Id" type="hidden" />
                         <button type="submit" class="btn btn-danger fw-bold w-100">
-                            <i class="bi bi-file-x me-1"></i> Yes, Delete
+                            <i class="bi bi-file-x me-1"></i> نعم، احذف
                         </button>
                     </form>
                     <button type="button" class="btn btn-secondary fw-bold flex-grow-1 w-100" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i> Cancel
+                        <i class="bi bi-x-circle me-1"></i> إلغاء
                     </button>
                 </div>
 

@@ -53,3 +53,16 @@
         font-size: 0.95rem;
     }
 
+.form-floating > label {
+    right: 0; /* اجعلها من الجهة اليمنى */
+    left: auto; /* أوقف الوضع الافتراضي من اليسار */
+    text-align: right;
+}
+
+
+
+
+/* تكبير الخط داخل الـ inputs */
+.form-control {
+    font-size: 1.1rem;
+}

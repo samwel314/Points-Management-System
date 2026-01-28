@@ -1,12 +1,13 @@
 ﻿@model Store
 
-<div class="container mt-4">
+<div class="container mt-4" dir="rtl">
+
     <div class="card shadow-sm border-1 rounded-3">
 
         <!-- Header -->
         <div class="card-header bg-warning bg-gradient py-3 text-center">
             <h2 class="fs-2 fw-bold text-white">
-                <i class="bi bi-pencil-square me-2"></i> Update @Model.Title Store
+                <i class="bi bi-pencil-square me-2"></i> تعديل @Model.Title
             </h2>
         </div>
 
@@ -18,33 +19,36 @@
 
                 <!-- Title -->
                 <div class="form-floating col-12">
-                    <input asp-for="Title" class="form-control fw-bold border-1 shadow-sm" placeholder="Store Title" />
-                    <label asp-for="Title" class="ms-2 fw-bold fs-5">Store Title</label>
+                    <input asp-for="Title" class="form-control fw-bold border-1 shadow-sm" placeholder="عنوان المحل" />
+                    <label asp-for="Title" class="me-2 fw-bold fs-5 text-end">اسم الفرع</label>
                     <span asp-validation-for="Title" class="text-danger fw-bold"></span>
                 </div>
 
                 <!-- Location -->
                 <div class="form-floating col-12">
-                    <input asp-for="Location" class="form-control fw-bold border-1 shadow-sm" placeholder="Store Location" />
-                    <label asp-for="Location" class="ms-2 fw-bold fs-5">Store Location</label>
+                    <input asp-for="Location" class="form-control fw-bold border-1 shadow-sm" placeholder="موقع المحل" />
+                    <label asp-for="Location" class="me-2 fw-bold fs-5 text-end">موقع الفرع</label>
                     <span asp-validation-for="Location" class="text-danger fw-bold"></span>
                 </div>
 
                 <!-- Buttons -->
                 <div class="col-12 d-flex justify-content-between flex-wrap mt-3 gap-2">
                     <button type="submit" class="btn btn-warning fw-bold flex-grow-1">
-                        <i class="bi bi-pencil-square me-1"></i> Update Store
+                        <i class="bi bi-pencil-square me-1"></i> تحديث بيانات الفرع 
                     </button>
                     <a asp-controller="Store" asp-action="Index" class="btn btn-outline-dark fw-bold flex-grow-1 text-center">
-                        <i class="bi bi-arrow-left-circle me-1"></i> Back To Stores
+                        <i class="bi bi-arrow-left-circle me-1"></i> العودة للفروع
                     </a>
                 </div>
 
             </form>
         </div>
+
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+  
 }

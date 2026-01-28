@@ -1,41 +1,38 @@
 ﻿@model List<Store>
+
 <div class="container mt-4">
-    <div class="mb-3">
+    <!-- زر العودة -->
+    <div class="mb-3 text-start">
         <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary fw-bold">
             <i class="bi bi-arrow-left fw-bold"></i> العودة للرئيسية
         </a>
     </div>
 
-    <!-- Header -->
+    <!-- العنوان وزر إضافة محل جديد -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <h2 class="fw-bold mb-0">
-            <i class="bi bi-shop-window text-primary me-2"></i>
-            Stores
+        <h2 class="fw-bold mb-0 text-primary">
+            <i class="bi bi-shop-window me-2"></i> المحلات
         </h2>
 
         <a asp-controller="Store" asp-action="Add"
-           class="btn btn-primary btn-sm px-3">
-            <i class="bi bi-plus-circle me-1"></i>
-            New Store
+           class="btn btn-primary btn-lg fw-bold px-4">
+            <i class="bi bi-plus-circle me-1"></i> إضافة محل جديد
         </a>
     </div>
 
     <div class="row g-4">
-
         @foreach (var store in Model)
         {
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card h-100 border rounded-3 shadow bg-light">
 
                     <div class="card-body">
-                        <h5 class="fw-bold mb-1">
-                            <i class="bi bi-shop text-primary me-1"></i>
-                            @store.Title
+                        <h5 class="fw-bold mb-1 text-primary">
+                            <i class="bi bi-shop me-1"></i> @store.Title
                         </h5>
 
                         <p class="text-muted small mb-3">
-                            <i class="bi bi-geo-alt me-1"></i>
-                            @store.Location
+                            <i class="bi bi-geo-alt me-1"></i> @store.Location
                         </p>
                     </div>
 
@@ -43,21 +40,21 @@
                         <div class="d-flex gap-2">
                             <a asp-action="Update" asp-route-Id="@store.Id"
                                class="btn btn-outline-primary btn-sm flex-fill"
-                               title="Edit">
-                                <i class="bi bi-pencil-square"></i>
+                               title="تعديل">
+                                <i class="bi bi-pencil-square"></i> تعديل
                             </a>
 
                             <a asp-action="Delete" asp-route-Id="@store.Id"
                                class="btn btn-outline-danger btn-sm flex-fill"
-                               title="Delete">
-                                <i class="bi bi-trash"></i>
+                               title="حذف">
+                                <i class="bi bi-trash"></i> حذف
                             </a>
 
                             <a asp-controller="Invoice" asp-action="ByStore"
                                asp-route-storeId="@store.Id"
                                class="btn btn-outline-secondary btn-sm flex-fill"
-                               title="View Invoices">
-                                <i class="bi bi-receipt"></i>
+                               title="عرض الفواتير">
+                                <i class="bi bi-receipt"></i> فواتير
                             </a>
                         </div>
                     </div>
@@ -65,6 +62,5 @@
                 </div>
             </div>
         }
-
     </div>
 </div>
