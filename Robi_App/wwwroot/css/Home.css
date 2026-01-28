@@ -1,5 +1,5 @@
-﻿
-.dash-card {
+﻿.dash-card {
+    display: block;
     text-decoration: none;
     color: inherit;
     transition: all .2s ease-in-out;
@@ -7,13 +7,12 @@
 }
 
 .dash-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
 }
 
-.dash-card p {
-    margin-top: 4px;
+.dash-card .card-body p {
     font-weight: 500;
-    color: #6c757d; /* text-secondary */
+    color: #6c757d;
 }
 

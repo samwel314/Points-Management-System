@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Robi_App.Controllers
 {
-    [Authorize]
+
     public class InvoiceController : Controller
     {
         private readonly IStoreService _storeService; 
@@ -25,12 +25,19 @@ namespace Robi_App.Controllers
             _authorizationService = authorizationService;
         }
         // admin
-        public IActionResult Index()
+        [Authorize(policy: SD.Role_Admin)]
+        public IActionResult Index(string filter = null!)
         {
-            var Data = _invoiceService.showInvoices();      
-            return View(Data);
+            IEnumerable<ShowInvoiceVM> invoices = null!;
+            if (filter == SD.zeroPoints)
+                invoices = _invoiceService.showInvoices(i => i.Points == 0);
+            else if (filter ==  SD.hasPoints)
+                invoices = _invoiceService.showInvoices(i => i.Points != 0);
+            else
+                invoices = _invoiceService.showInvoices();
+            return View(invoices);
         }
-
+        [Authorize(policy: SD.Role_Admin)]
         public IActionResult UpdatePoints(ShowInvoiceVM model)
         {
             var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true); 
@@ -58,6 +65,8 @@ namespace Robi_App.Controllers
             return RedirectToAction ("Index");  
         }
         // Client 
+        //[Authorize(policy: SD.Role_Client)]
+
         public IActionResult Create() 
         {
             CreateUpdateInvoiceVM viewModel = new CreateUpdateInvoiceVM()

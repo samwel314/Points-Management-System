@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Robi_App.Models;
 using Robi_App.Models.ViewModels;
+using System.Linq.Expressions;
 
 namespace Robi_App.Services
 {
@@ -13,6 +14,6 @@ namespace Robi_App.Services
 
         public CustomerProfileVM GetCustomerProfile(string Id);
 
-        public IEnumerable<ShowInvoiceVM> showInvoices(); 
+        public IEnumerable<ShowInvoiceVM> showInvoices(Expression<Func<Invoice , bool > > filter = null!); 
     }
 }

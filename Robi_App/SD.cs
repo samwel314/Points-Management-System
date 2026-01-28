@@ -11,6 +11,8 @@ namespace Robi_App
         public const string UserName = "Name";
         public const string UserPassword = "Password";
         public const string ForStore = "StoreId";
+        public const string zeroPoints = "zeroPoints";
+        public const string hasPoints = "hasPoints"; 
         public static IEnumerable<SelectListItem>
             Roles = new List<SelectListItem>()
             {

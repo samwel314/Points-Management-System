@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Robi_App.Controllers
 {
-    [Authorize]
     public class CustomerController : Controller
     {
         private readonly IInvoiceService _invoiceService;
@@ -29,12 +28,15 @@ namespace Robi_App.Controllers
             return View(customerData);
         }
         // admin 
+        [Authorize(policy: SD.Role_Admin)]
 
         public async Task<IActionResult> Customers()
         {
             var Customers = await _userService.GetAllCustomers(); 
             return View(Customers);      
         }
+        [Authorize(policy: SD.Role_Admin)]
+
         public IActionResult Show(string Id)
         {
             var customer =  _invoiceService.GetCustomerProfile(Id);

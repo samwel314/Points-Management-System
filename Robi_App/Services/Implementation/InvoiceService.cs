@@ -2,6 +2,7 @@
 using Robi_App.Data;
 using Robi_App.Models;
 using Robi_App.Models.ViewModels;
+using System.Linq.Expressions;
 
 namespace Robi_App.Services.Implementation
 {
@@ -69,9 +70,13 @@ namespace Robi_App.Services.Implementation
             _db.SaveChanges();  
         }
 
-        public IEnumerable<ShowInvoiceVM> showInvoices()
+        public IEnumerable<ShowInvoiceVM> showInvoices(Expression<Func<Invoice, bool>> filter = null!)
         {
-            return _db.Invoices.Select (x => new ShowInvoiceVM { 
+            var query = _db.Invoices.AsQueryable(); 
+            if (filter != null)
+                query = query.Where(filter);   
+            
+            return query.Select (x => new ShowInvoiceVM { 
             Id = x.Id,  
             code=x.Code,    
             storeName =x.Store.Title,   
