@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace Robi_App
 {
@@ -7,11 +8,11 @@ namespace Robi_App
         public const string Role_Admin = "Admin";
         public const string Role_Employee = "Employee";
         public const string Role_Client = "Client";
-        public const string UserName = "Name";  
+        public const string UserName = "Name";
         public const string UserPassword = "Password";
         public const string ForStore = "StoreId";
-        public static IEnumerable <SelectListItem> 
-            Roles =  new List <SelectListItem>()
+        public static IEnumerable<SelectListItem>
+            Roles = new List<SelectListItem>()
             {
                 new SelectListItem
                 {
@@ -28,6 +29,9 @@ namespace Robi_App
                     Text = "Employee",
                     Value = Role_Employee,
                 } ,
-            };  
+            };
+
     }
+    
 }
+

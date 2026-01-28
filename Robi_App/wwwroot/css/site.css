@@ -624,6 +624,18 @@ progress {
     font-weight: 400;
 }
 
+.task-card {
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+.task-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+}
+
+
+
 .display-1 {
     font-weight: 300;
     line-height: 1.2;
@@ -736,7 +748,7 @@ progress {
 }
 
     .blockquote-footer::before {
-        content: "— ";
+        content: "ï¿½ï¿½";
     }
 
 .img-fluid {
