@@ -1,37 +1,47 @@
 ﻿@model CustomerProfileVM
 @{
-        int idCount = 0 ;
-
+    int idCount = 0;
 }
-<div class="container mt-4">
 
-    <!-- Customer Info -->
+<div class="container mt-4" dir="rtl">
+
+    <!-- زر العودة للرئيسية -->
+    <div class="mb-3 text-start">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary fw-bold">
+            <i class="bi bi-arrow-left fw-bold"></i> العودة للرئيسية
+        </a>
+    </div>
+
+    <!-- معلومات العميل -->
     <div class="card shadow-sm mb-4">
         <div class="card-body text-center">
 
-            <h5 class="mb-1">
-                <i class="bi bi-person-circle"></i>
-                @Model.CustomerName
+            <h5 class="mb-2">
+                <i class="bi bi-person-circle"></i> @Model.CustomerName
             </h5>
 
             <p class="text-muted mb-2">
-                <i class="bi bi-telephone"></i>
-                @Model.PhoneNumber
+                <i class="bi bi-telephone"></i> @Model.PhoneNumber
             </p>
 
             <span class="badge bg-success fs-6">
-                ⭐ Total Points: @Model.TotalPoints
+                ⭐ إجمالي النقاط  @Model.TotalPoints
             </span>
+
+            <div class="mt-2">
+                <button class="btn btn-outline-danger btn-sm fw-bold">
+                    <i class="bi bi-person-x"></i> تعطيل الحساب
+                </button>
+            </div>
 
         </div>
     </div>
 
-
-    <div class="row">
-        <!-- Invoice Card -->
+    <!-- فواتير العميل -->
+    <div class="row g-4">
         @foreach (var info in Model.Invoices)
         {
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
 
@@ -39,21 +49,22 @@
                             <span class="fw-bold">
                                 <i class="bi bi-receipt"></i> @info.code
                             </span>
-                            <span class="badge bg-success">@info.Points Points</span>
+                            <span class="badge bg-success">@info.Points نقاط</span>
                         </div>
 
                         <p class="mb-1 text-muted">
-                            <i class="bi bi-shop"></i> Store: @info.storeName
+                            <i class="bi bi-shop"></i> المحل: @info.storeName
                         </p>
+
                         <p class="mb-1 text-muted">
-                            <i class="bi bi-calendar-event"></i> Date: @info.Date
+                            <i class="bi bi-calendar-event"></i> التاريخ: @info.Date
                         </p>
 
                         <div class="d-grid mt-2">
                             <button class="btn btn-outline-primary btn-sm"
                                     data-bs-toggle="modal"
                                     data-bs-target="#@(idCount)editPointsModal">
-                                <i class="bi bi-pencil-square"></i> Edit Points
+                                <i class="bi bi-pencil-square"></i> تعديل النقاط
                             </button>
                         </div>
 
@@ -61,57 +72,52 @@
                 </div>
             </div>
 
+            <!-- مودال تعديل النقاط -->
             <div class="modal fade" id="@(idCount)editPointsModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Edit Invoice Points</h5>
+                            <h5 class="modal-title">
+                                <i class="bi bi-pencil-square"></i> تعديل نقاط الفاتورة
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
                         <div class="modal-body">
                             <form method="post" asp-controller="Invoice" asp-action="UpdatePoints" id="@info.Id">
                                 <input name="Id" value="@info.Id" hidden />
+                                <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
+
                                 <div class="mb-3">
-                                    <label class="form-label"><i class="bi bi-upc-scan"></i> Invoice Code</label>
+                                    <label class="form-label"><i class="bi bi-upc-scan"></i> كود الفاتورة</label>
                                     <input asp-for="@info.code" class="form-control" readonly>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label"><i class="bi bi-shop"></i> Store</label>
+                                    <label class="form-label"><i class="bi bi-shop"></i> المحل</label>
                                     <input asp-for="@info.storeName" class="form-control" readonly>
                                 </div>
 
                                 <div class="mb-3">
-                                    <input hidden type="text" name="CustomerId" value="@Model.CustomerId" class="form-control" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="bi bi-stars"></i> Points</label>
+                                    <label class="form-label"><i class="bi bi-stars"></i> النقاط</label>
                                     <input type="number" name="Points" value="@info.Points" class="form-control" min="0">
                                 </div>
+
                                 <div class="modal-footer d-grid">
                                     <button type="submit" class="btn btn-success">
-                                        <i class="bi bi-check-circle"></i> Save Points
+                                        <i class="bi bi-check-circle"></i> حفظ التغييرات
                                     </button>
                                 </div>
                             </form>
                         </div>
 
-
-
                     </div>
                 </div>
             </div>
+
             idCount++;
         }
-
-
-
     </div>
 
 </div>
-
-
-

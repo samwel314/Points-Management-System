@@ -16,3 +16,40 @@
     color: #6c757d;
 }
 
+/* Hover effect للكارد */
+.hover-shadow:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.25rem rgba(0,0,0,0.15);
+    transition: all 0.2s ease-in-out;
+}
+
+.card-body p {
+    line-height: 1.4;
+}
+
+
+    .customer-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .customer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    /* أيقونة العميل مع Gradient */
+    .customer-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+    /* تكبير النصوص داخل الكارد */
+    .customer-card h5 {
+        font-size: 1.2rem;
+    }
+
+    .customer-card span {
+        font-size: 0.95rem;
+    }
+

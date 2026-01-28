@@ -44,7 +44,7 @@ namespace Robi_App.Services.Implementation
                     Id = i.Id,
                     code = i.Code,
                     storeName = i.Store.Title,
-                    Date = i.CreatedAt.ToShortDateString() , 
+                    Date = i.CreatedAt.ToString("dd/MM/yyyy" ) , 
                 }).ToList(),
                 TotalPoints = _db.Invoices.Where(i => i.UserId == Id).Sum(i => i.Points)
             };
@@ -83,7 +83,7 @@ namespace Robi_App.Services.Implementation
             UserName = _db.ApplicationUsers.First(u => u.Id == x.UserId)!.FullName,
             Phone = x.User.UserName!,
             Points = x.Points,
-            Date = x.CreatedAt.ToShortDateString()  
+            Date = x.CreatedAt.ToString("dd/MM/yyyy")
             } ).ToList();
         }
     }

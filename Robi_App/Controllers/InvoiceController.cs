@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +8,7 @@ using Robi_App.Services;
 using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Robi_App.Controllers
 {
@@ -30,11 +31,20 @@ namespace Robi_App.Controllers
         {
             IEnumerable<ShowInvoiceVM> invoices = null!;
             if (filter == SD.zeroPoints)
+            {
                 invoices = _invoiceService.showInvoices(i => i.Points == 0);
+                TempData["txt"] = "<b> فواتير لا تحتوي علي نقاط </b>";
+            }
             else if (filter ==  SD.hasPoints)
+            {
                 invoices = _invoiceService.showInvoices(i => i.Points != 0);
+                TempData["txt"] = "<b> فواتير تحتوي علي نقاط</b>";
+            }
             else
+            {
                 invoices = _invoiceService.showInvoices();
+                TempData["txt"] = "  <b>جميع الفواتير  </b>";
+            }
             return View(invoices);
         }
         [Authorize(policy: SD.Role_Admin)]
