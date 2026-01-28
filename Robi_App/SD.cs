@@ -18,17 +18,17 @@ namespace Robi_App
             {
                 new SelectListItem
                 {
-                    Text = "Admin",
+                    Text = "مدير ",
                     Value = Role_Admin,
                 } ,
                  new SelectListItem
                 {
-                    Text = "Client",
+                    Text = "عميل",
                     Value = Role_Client,
                 } ,
                   new SelectListItem
                 {
-                    Text = "Employee",
+                    Text = "موظف",
                     Value = Role_Employee,
                 } ,
             };

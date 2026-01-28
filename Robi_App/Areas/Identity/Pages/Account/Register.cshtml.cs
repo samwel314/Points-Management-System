@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Robi_App.Areas.Identity.Pages.Account
 {
- //   [Authorize (Policy = SD.Role_Admin)]
+   [Authorize (Policy = SD.Role_Admin)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
