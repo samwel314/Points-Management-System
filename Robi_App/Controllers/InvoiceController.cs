@@ -59,7 +59,7 @@ namespace Robi_App.Controllers
                 {
                     statusCode = 404
                 });
-            }
+            } 
             if (model.Points < 0)
                 return RedirectToAction("Index");
 

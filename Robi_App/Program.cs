@@ -37,6 +37,9 @@ builder.Services.AddAuthorization(Opt =>
 {
     Opt.AddPolicy("CanUpdateInvoice", apb =>
       apb.AddRequirements(new IsInvoiceOwnerRequirement()));
+    Opt.AddPolicy("CanSeeAndUpdateInvoicePoints", apb =>
+      apb.AddRequirements(new IsInvoiceOwnerRequirement()));
+
     Opt.AddPolicy(SD.Role_Admin, pb => pb.RequireClaim(SD.Role_Admin));
     Opt.AddPolicy(SD.Role_Client, pb => pb.RequireClaim(SD.Role_Client));
     Opt.AddPolicy(SD.Role_Employee, pb => pb.RequireClaim(SD.Role_Employee));
