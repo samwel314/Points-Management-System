@@ -4,10 +4,10 @@ using Robi_App.Models;
 
 namespace Robi_App.AuthorizationRequirement.Handler
 {
-    public class CanShowInvoicesAndUpdatePointsHandler : AuthorizationHandler
-       <CanShowInvoicesAndUpdatePoints, Invoice>
+    public class CanUpdateInvoicePointsHandler : AuthorizationHandler
+       <CanUpdateInvoicesPointsRequirement, Invoice>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CanShowInvoicesAndUpdatePoints requirement, Invoice resource)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CanUpdateInvoicesPointsRequirement requirement, Invoice resource)
         {
             if (context.User.HasClaim(C => C.Type == SD.Role_Admin))
             {

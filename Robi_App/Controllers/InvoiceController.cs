@@ -26,7 +26,7 @@ namespace Robi_App.Controllers
             _authorizationService = authorizationService;
         }
         // admin
-        [Authorize(policy: SD.Role_Admin)]
+        [Authorize(policy: "AdminOrEmployee")]
         public IActionResult Index(string filter = null!)
         {
             IEnumerable<ShowInvoiceVM> invoices = null!;
@@ -47,9 +47,10 @@ namespace Robi_App.Controllers
             }
             return View(invoices);
         }
-        [Authorize(policy: SD.Role_Admin)]
+        [Authorize(policy: "AdminOrEmployee")]
+
         [HttpPost]
-        public IActionResult UpdatePoints(ShowInvoiceVM model, string url = null! )
+        public async Task<IActionResult> UpdatePoints(ShowInvoiceVM model, string url = null! )
         {
             var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true); 
             if (invoicefromDB is null  )
@@ -59,7 +60,11 @@ namespace Robi_App.Controllers
                 {
                     statusCode = 404
                 });
-            } 
+            }
+            var result = await _authorizationService.AuthorizeAsync(User, invoicefromDB, "CanUpdateInvoicePoints"); 
+            if (!result.Succeeded)
+                return new ForbidResult();
+
             if (model.Points < 0)
                 return RedirectToAction("Index");
 

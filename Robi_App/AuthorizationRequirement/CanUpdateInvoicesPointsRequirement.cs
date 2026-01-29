@@ -2,7 +2,7 @@
 
 namespace Robi_App.AuthorizationRequirement
 {
-    public class CanShowInvoicesAndUpdatePoints : IAuthorizationRequirement
+    public class CanUpdateInvoicesPointsRequirement : IAuthorizationRequirement
     {
 
     }

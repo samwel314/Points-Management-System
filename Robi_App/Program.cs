@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Robi_App;
-using Robi_App.Models;
 using Robi_App.AuthorizationRequirement;
 using Robi_App.AuthorizationRequirement.Handler;
 using Robi_App.Data;
 using Robi_App.Data.DBInitializer;
+using Robi_App.Models;
 using Robi_App.Services;
 using Robi_App.Services.Implementation;
 using System;
@@ -37,8 +38,13 @@ builder.Services.AddAuthorization(Opt =>
 {
     Opt.AddPolicy("CanUpdateInvoice", apb =>
       apb.AddRequirements(new IsInvoiceOwnerRequirement()));
-    Opt.AddPolicy("CanSeeAndUpdateInvoicePoints", apb =>
-      apb.AddRequirements(new IsInvoiceOwnerRequirement()));
+    Opt.AddPolicy("CanUpdateInvoicePoints", apb =>
+      apb.AddRequirements(new CanUpdateInvoicesPointsRequirement()));
+    Opt.AddPolicy("AdminOrEmployee", policy =>
+    policy.RequireAssertion(context =>
+        context.User.HasClaim(SD.Role_Admin, SD.Role_Admin) ||
+        context.User.HasClaim (SD.Role_Employee, SD.Role_Employee)
+    ));
 
     Opt.AddPolicy(SD.Role_Admin, pb => pb.RequireClaim(SD.Role_Admin));
     Opt.AddPolicy(SD.Role_Client, pb => pb.RequireClaim(SD.Role_Client));
@@ -47,6 +53,8 @@ builder.Services.AddAuthorization(Opt =>
 }); 
 
 builder.Services.AddScoped<IAuthorizationHandler, InvoiceOwnerhandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, CanUpdateInvoicePointsHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
