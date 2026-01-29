@@ -6,59 +6,72 @@
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-6">
             <div class="card shadow-sm">
+
                 <div class="card-header text-center fw-bold">
                     <i class="bi bi-receipt-cutoff me-1"></i>
-                  Update Invoice Data
+                    تعديل بيانات الفاتورة
                 </div>
+
                 <div class="card-body">
                     <form method="post" asp-action="Update">
-                        <!-- Invoice Code -->
-                        <input asp-for="Id" hidden disabled/>
+
+                        <input asp-for="Id" hidden  />
+
                         <div class="mb-3">
                             <label class="form-label">
                                 <i class="bi bi-upc-scan me-1"></i>
-                                Invoice Code        
+                                كود الفاتورة
                             </label>
+
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bi bi-hash"></i>
                                 </span>
+
                                 <input asp-for="Code"
                                        class="form-control"
-                                       placeholder="Enter invoice code">
+                                       placeholder="أدخل كود الفاتورة">
                             </div>
-                            <span class="text-danger fw-bold" asp-validation-for="Code"></span>
 
+                            <span class="text-danger fw-bold" asp-validation-for="Code"></span>
                         </div>
 
-                        <!-- Store -->
                         <div class="mb-4">
                             <label class="form-label">
                                 <i class="bi bi-shop me-1"></i>
-                                From Store
+                                من متجر
                             </label>
+
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bi bi-building"></i>
                                 </span>
-                                <select asp-for="StoreId" asp-items="@Model.Stores"
-                                        class="form-control"></select>
+
+                                <select asp-for="StoreId"
+                                        asp-items="@Model.Stores"
+                                        class="form-control">
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Buttons -->
+                        <!-- الأزرار -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-1"></i>
-                                Update 
-                            </button> 
-                            <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-pencil-square me-1"></i>
+                                حفظ التعديلات
+                            </button>
+
+                            <a asp-controller="Customer"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left"></i>
-                                Back
+                                رجوع
                             </a>
                         </div>
+
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
