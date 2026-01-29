@@ -78,7 +78,7 @@ namespace Robi_App.Services.Implementation
 
             if (user is not null &&  user.HasClaim(c => c.Type == SD.Role_Employee))
             {
-                var storeId = int.Parse(user.FindFirst(c => c.Type == SD.Role_Employee)!.Value);
+                var storeId = int.Parse(user.FindFirst(c => c.Type == SD.ForStore)!.Value);
                 query = query.Where(c
                => c.StoreId == storeId);
             }
