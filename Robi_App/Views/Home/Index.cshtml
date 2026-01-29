@@ -121,7 +121,7 @@
         <div class="row g-3   justify-content-center">
 
             <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
+                <a asp-controller="Invoice" asp-action="Index"  class="dash-card">
                     <div class="card text-center h-100">
                         <div class="card-body">
                             <i class="bi bi-shop fs-3 text-success"></i>
@@ -133,7 +133,7 @@
             </div>
 
             <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
+                <a asp-controller="Invoice" asp-action="Index" asp-route-filter="@SD.zeroPoints" class="dash-card">
                     <div class="card text-center h-100">
                         <div class="card-body">
                             <i class="bi bi-clock fs-3 text-warning"></i>
@@ -145,7 +145,7 @@
             </div>
 
             <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
+                <a asp-controller="Invoice" asp-action="Index" asp-route-filter="@SD.hasPoints" class="dash-card">
                     <div class="card text-center h-100">
                         <div class="card-body">
                             <i class="bi bi-check-circle fs-3 text-primary"></i>
