@@ -1,0 +1,100 @@
+﻿
+<div class="container mt-4" dir="rtl">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h4 class="fw-bold mb-0 text-primary">
+            <i class="bi bi-receipt-cutoff ms-2"></i>
+            فواتير الفرع
+        </h4>
+
+        <a asp-controller="Invoice" asp-action="Create"
+           class="btn btn-success fw-bold">
+            <i class="bi bi-plus-circle ms-1"></i>
+            إضافة فاتورة
+        </a>
+    </div>
+
+    <!-- Summary -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">إجمالي الفواتير</h6>
+                    <h4 class="fw-bold text-primary">125</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">إجمالي المبلغ</h6>
+                    <h4 class="fw-bold text-success">45,200 ج.م</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">فواتير اليوم</h6>
+                    <h4 class="fw-bold text-warning">8</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoices -->
+    <div class="row g-3">
+
+        
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100 border-0">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">
+                                فاتورة #invoice.Id
+                            </span>
+                            <span class="text-muted small">
+                                invoice.Date.ToString("dd/MM/yyyy")
+                            </span>
+                        </div>
+
+                        <h6 class="fw-bold mb-2">
+                            <i class="bi bi-person ms-1"></i>
+                            invoice.CustomerName
+                        </h6>
+
+                        <p class="mb-2 text-muted small">
+                            <i class="bi bi-telephone ms-1"></i>
+                            invoice.CustomerPhone
+                        </p>
+
+                        <h5 class="fw-bold text-success mb-3">
+                            invoice.TotalAmount.ToString("N0") ج.م
+                        </h5>
+
+                        <div class="d-flex gap-2">
+                            <a asp-action="Details" asp-route-id="invoice.Id"
+                               class="btn btn-outline-primary btn-sm flex-fill">
+                                <i class="bi bi-eye"></i>
+                                التفاصيل
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="invoice.Id"
+                               class="btn btn-outline-danger btn-sm flex-fill">
+                                <i class="bi bi-trash"></i>
+                                حذف
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

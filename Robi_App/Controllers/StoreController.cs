@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Robi_App.Models;
@@ -6,6 +7,7 @@ using System.Collections.Immutable;
 
 namespace Robi_App.Controllers
 {
+    [Authorize (policy: SD.Role_Admin)]
     public class StoreController : Controller
     {
         private readonly IStoreService _service; 
@@ -98,6 +100,11 @@ namespace Robi_App.Controllers
             }
             _service.DeleteStore(store);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult ShowInvoices ()
+        {
+            return View();  
         }
     }
 }

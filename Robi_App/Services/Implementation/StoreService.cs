@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Robi_App.Data;
 using Robi_App.Models;
+using Robi_App.Models.ViewModels;
 
 namespace Robi_App.Services.Implementation
 {
@@ -51,5 +52,23 @@ namespace Robi_App.Services.Implementation
             _db.Stores.Update(store);           
             _db.SaveChanges();  
         }
+        public ShowStoreInvoicesVM ShowStoreInvoicesVM(int id)
+        {
+            var store = _db.Stores.Find(id);
+            if (store == null)
+                return null!;
+            var firstDayOfMonth = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var firstDayOfNextMonth = firstDayOfMonth.AddMonths(1);
+            return new ShowStoreInvoicesVM()
+            {
+                Id = id,    
+                StoreName = store.Title , 
+                TotalInvoices = _db.Invoices.Where(i=>i.StoreId == id).Count(),
+                TotalToDayInvoices = _db.Invoices.
+                Where(i => i.StoreId == id && i.CreatedAt == DateOnly.FromDateTime(DateTime.Now)).Count(),
+                TotalToMonthInvoices = _db.Invoices.Where(i => i.StoreId == id && i.CreatedAt >= firstDayOfMonth && i.CreatedAt < firstDayOfNextMonth ).Count(),
+            }; 
+        }
+ 
     }
 }
