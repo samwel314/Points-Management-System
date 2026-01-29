@@ -2,17 +2,24 @@
     ViewData["Title"] = "Home Page";
 
 }
-<div class="container mt-4">
+<div class="container fw-bold mt-4">
 
-    <!-- Main Header -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body text-center p-4 bg-light rounded">
-            <h1 class="fw-bold text-primary mb-2">
-                <i class="bi bi-paint-bucket"></i> GLC للدهانات
+    <div class="row align-items-center fw-bold mb-5">
+        <div class="col-md-6 text-center text-md-start">
+            <h1 class="fw-bold text-primary mb-3">
+                <i class="bi bi-stars me-2"></i>
+                Point Hub
             </h1>
-            <p class="text-muted fs-5">
-                نظام إدارة الفواتير والنقاط للمحلات والفروع
+            <p class="text-muted fs-3 mb-4 text-center">
+                نظام شامل لإدارة الفواتير والنقاط للمحلات والفروع
             </p>
+            <p class="text-muted fs-4 mb-4 text-center">
+                لتسهيل متابعة عملك وزيادة الإنتاجية
+            </p>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="~/icons8-invoice-100.png" class="img-fluid" style="max-width: 350px;">
         </div>
     </div>
 
@@ -194,8 +201,47 @@
     }
     else 
     {
-    <div class="d-flex text-dark justify-content-center align-items-center gap-2 mb-4">
-        <img src="~/icons8-invoice-100.png" width="300" height="300">
+    
+    <div class="row text-center g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100 p-3">
+                <div class="card-body">
+                    <i class="bi bi-shop fs-1 text-primary mb-3"></i>
+                    <h5 class="fw-bold">إدارة المحلات</h5>
+                    <p class="text-muted">أضف أو عدّل بيانات المحلات والفروع بسهولة</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100 p-3">
+                <div class="card-body">
+                    <i class="bi bi-receipt fs-1 text-success mb-3"></i>
+                    <h5 class="fw-bold">إدارة الفواتير</h5>
+                    <p class="text-muted">تابع جميع الفواتير وأضف فواتير جديدة بسرعة</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100 p-3">
+                <div class="card-body">
+                    <i class="bi bi-stars fs-1 text-warning mb-3"></i>
+                    <h5 class="fw-bold">النقاط</h5>
+                    <p class="text-muted">تتبع النقاط لكل فاتورة وتحكم في المكافآت</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100 p-3">
+                <div class="card-body">
+                    <i class="bi bi-people fs-1 text-danger mb-3"></i>
+                    <h5 class="fw-bold">الموظفين والعملاء</h5>
+                    <p class="text-muted">إدارة المستخدمين مع التحكم بالصلاحيات بسهولة</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     }
