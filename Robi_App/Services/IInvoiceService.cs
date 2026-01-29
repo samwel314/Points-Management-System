@@ -2,6 +2,7 @@
 using Robi_App.Models;
 using Robi_App.Models.ViewModels;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Robi_App.Services
 {
@@ -14,6 +15,6 @@ namespace Robi_App.Services
 
         public CustomerProfileVM GetCustomerProfile(string Id);
 
-        public IEnumerable<ShowInvoiceVM> showInvoices(Expression<Func<Invoice , bool > > filter = null!); 
+        public IEnumerable<ShowInvoiceVM> showInvoices(ClaimsPrincipal user , Expression<Func<Invoice , bool > > filter = null!); 
     }
 }

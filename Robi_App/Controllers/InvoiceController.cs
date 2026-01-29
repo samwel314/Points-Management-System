@@ -32,17 +32,17 @@ namespace Robi_App.Controllers
             IEnumerable<ShowInvoiceVM> invoices = null!;
             if (filter == SD.zeroPoints)
             {
-                invoices = _invoiceService.showInvoices(i => i.Points == 0);
+                invoices = _invoiceService.showInvoices(User, i => i.Points == 0);
                 TempData["txt"] = "<b> فواتير لا تحتوي علي نقاط </b>";
             }
             else if (filter ==  SD.hasPoints)
             {
-                invoices = _invoiceService.showInvoices(i => i.Points != 0);
+                invoices = _invoiceService.showInvoices(User, i => i.Points != 0);
                 TempData["txt"] = "<b> فواتير تحتوي علي نقاط</b>";
             }
             else
             {
-                invoices = _invoiceService.showInvoices();
+                invoices = _invoiceService.showInvoices(User);
                 TempData["txt"] = "  <b>جميع الفواتير  </b>";
             }
             return View(invoices);

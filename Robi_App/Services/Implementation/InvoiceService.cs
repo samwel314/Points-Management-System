@@ -3,6 +3,7 @@ using Robi_App.Data;
 using Robi_App.Models;
 using Robi_App.Models.ViewModels;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Robi_App.Services.Implementation
 {
@@ -70,9 +71,16 @@ namespace Robi_App.Services.Implementation
             _db.SaveChanges();  
         }
 
-        public IEnumerable<ShowInvoiceVM> showInvoices(Expression<Func<Invoice, bool>> filter = null!)
+        public IEnumerable<ShowInvoiceVM> showInvoices(ClaimsPrincipal user ,Expression<Func<Invoice, bool>> filter = null!)
         {
-            var query = _db.Invoices.AsNoTracking().AsQueryable(); 
+
+            var query = _db.Invoices.AsNoTracking().AsQueryable();
+            if (user.HasClaim(c => c.Type == SD.Role_Employee))
+            {
+                var storeId = int.Parse(user.FindFirst(c => c.Type == SD.Role_Employee)!.Value);
+                query = query.Where(c
+               => c.StoreId == storeId);
+            }
             if (filter != null)
                 query = query.Where(filter);   
             
