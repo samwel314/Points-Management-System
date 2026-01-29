@@ -24,7 +24,7 @@
             <i class="bi bi-shield-lock"></i> لوحة تحكم المدير
         </h4>
 
-        <div class="row g-3 mb-5">
+        <div class="row g-3   justify-content-center ">
 
             <div class="col-6 col-md-4 col-lg-3">
                 <a asp-controller="Invoice" asp-action="Index" class="dash-card">
@@ -112,14 +112,13 @@
 
         </div>
     }
-   <!-- Employee Dashboard -->
     else if (User.HasClaim(c => c.Type == SD.Role_Employee))
     {
         <h4 class="fw-bold text-success text-center mb-3">
             <i class="bi bi-person-badge"></i> لوحة تحكم الموظف
         </h4>
 
-        <div class="row g-3 mb-5">
+        <div class="row g-3   justify-content-center">
 
             <div class="col-6 col-md-4">
                 <a href="#" class="dash-card">
@@ -159,18 +158,16 @@
 
         </div>
     }
-
-    <!-- Client Dashboard -->
     else if (User.HasClaim(c => c.Type == SD.Role_Client))
     {
         <h4 class="fw-bold text-primary text-center mb-3">
             <i class="bi bi-person"></i> لوحة تحكم العميل
         </h4>
 
-        <div class="row g-3">
+        <div class="row g-3  justify-content-center">
 
             <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
+                <a asp-controller="Invoice" asp-action="create" class="dash-card">
                     <div class="card text-center h-100">
                         <div class="card-body">
                             <i class="bi bi-plus-circle fs-3 text-primary"></i>
@@ -182,36 +179,12 @@
             </div>
 
             <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
+                <a asp-controller="customer" asp-action="index" class="dash-card">
                     <div class="card text-center h-100">
                         <div class="card-body">
                             <i class="bi bi-receipt fs-3 text-secondary"></i>
                             <h6 class="fw-bold mt-2">فواتيري</h6>
                             <p>عرض جميع الفواتير</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-shop fs-3 text-secondary"></i>
-                            <h6 class="fw-bold mt-2">محلات GLC</h6>
-                            <p>عرض الفروع والمحلات</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-star-fill fs-3 text-warning"></i>
-                            <h6 class="fw-bold mt-2">نقاطي</h6>
-                            <p>رصيد النقاط الحالي</p>
                         </div>
                     </div>
                 </a>

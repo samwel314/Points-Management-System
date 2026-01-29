@@ -71,8 +71,7 @@ namespace Robi_App.Controllers
           return RedirectToAction ("Index" , new { filter  = SD.hasPoints} );  
         }
         // Client 
-        //[Authorize(policy: SD.Role_Client)]
-
+        [Authorize(policy: SD.Role_Client)]
         public IActionResult Create() 
         {
             CreateUpdateInvoiceVM viewModel = new CreateUpdateInvoiceVM()
@@ -85,6 +84,7 @@ namespace Robi_App.Controllers
             };  
             return View(viewModel);
         }
+        [Authorize(policy: SD.Role_Client)]
         [HttpPost]
         public IActionResult Create (CreateUpdateInvoiceVM model)
         {
@@ -114,7 +114,7 @@ namespace Robi_App.Controllers
             // will change it soon to UserInvoices
             return RedirectToAction("index" , "Customer"); 
         }
-
+        [Authorize(policy: SD.Role_Client)]
         public async Task<IActionResult> Update (int Id)
         {
             var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(Id , false);
@@ -150,7 +150,8 @@ namespace Robi_App.Controllers
             };
             return View(viewModel);
         }
-        [HttpPost]
+        [Authorize(policy: SD.Role_Client)]
+        [HttpPost] 
         public async Task<IActionResult> Update (CreateUpdateInvoiceVM model)
         {
             

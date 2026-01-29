@@ -21,6 +21,7 @@ namespace Robi_App.Controllers
             _userService = userService;
         }
         //Client 
+        [Authorize (policy: SD.Role_Client)]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
