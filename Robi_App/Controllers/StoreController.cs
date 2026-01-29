@@ -111,15 +111,14 @@ namespace Robi_App.Controllers
 
         public IActionResult ShowInvoices (int Id)
         {
-            var store = _service.ShowStoreInvoicesVM    (Id);   
+            var store = _service.ShowStoreInvoicesVM(Id);   
             if (store is null)
             {
                 TempData["Message"] = "Sorry ! This Store Not Found";
                 return RedirectToAction("Error", "Home" , new {});
             }
-            // employee auth logic 
 
-            store.Invoices = _invoiceService.showInvoices (i => i.StoreId == Id);
+            store.Invoices = _invoiceService.showInvoices (null!,  i => i.StoreId == Id);
             return View(store);  
         }
     }

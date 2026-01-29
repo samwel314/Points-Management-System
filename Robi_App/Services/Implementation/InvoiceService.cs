@@ -75,7 +75,8 @@ namespace Robi_App.Services.Implementation
         {
 
             var query = _db.Invoices.AsNoTracking().AsQueryable();
-            if (user.HasClaim(c => c.Type == SD.Role_Employee))
+
+            if (user is not null &&  user.HasClaim(c => c.Type == SD.Role_Employee))
             {
                 var storeId = int.Parse(user.FindFirst(c => c.Type == SD.Role_Employee)!.Value);
                 query = query.Where(c
