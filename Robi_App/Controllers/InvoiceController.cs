@@ -48,7 +48,8 @@ namespace Robi_App.Controllers
             return View(invoices);
         }
         [Authorize(policy: SD.Role_Admin)]
-        public IActionResult UpdatePoints(ShowInvoiceVM model)
+        [HttpPost]
+        public IActionResult UpdatePoints(ShowInvoiceVM model, string url = null! )
         {
             var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true); 
             if (invoicefromDB is null  )
@@ -62,17 +63,12 @@ namespace Robi_App.Controllers
             if (model.Points < 0)
                 return RedirectToAction("Index");
 
-            invoicefromDB.Points = model.Points;
-
-            // if admin set it with 0 points allow him to show it agene with zero invoices 
-            if (model.Points != 0)
-                invoicefromDB.IsReviewed = true;
-            else
-                invoicefromDB.IsReviewed = false;   
-                _invoiceService.Save(); 
-            if (model.CustomerId != null)
-                return RedirectToAction("Show" , "Customer" , new { Id = model.CustomerId });
-            return RedirectToAction ("Index");  
+            invoicefromDB.Points = model.Points;    
+            _invoiceService.Save();
+            if (url != null)
+                return Redirect(url); 
+            //**** 
+          return RedirectToAction ("Index" , new { filter  = SD.hasPoints} );  
         }
         // Client 
         //[Authorize(policy: SD.Role_Client)]

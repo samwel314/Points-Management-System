@@ -16,9 +16,9 @@
         </div>
     </div>
 
-
+    
     <!-- Admin Dashboard -->
-    @if (User.HasClaim(c => c.Type == SD.Role_Admin))
+   @if (User.HasClaim(c => c.Type == SD.Role_Admin))
     {
         <h4 class="fw-bold text-danger text-center mb-3">
             <i class="bi bi-shield-lock"></i> لوحة تحكم المدير
@@ -112,9 +112,8 @@
 
         </div>
     }
-
-    <!-- Employee Dashboard -->
-    @if (User.HasClaim(c => c.Type == SD.Role_Employee))
+   <!-- Employee Dashboard -->
+    else if (User.HasClaim(c => c.Type == SD.Role_Employee))
     {
         <h4 class="fw-bold text-success text-center mb-3">
             <i class="bi bi-person-badge"></i> لوحة تحكم الموظف
@@ -162,7 +161,7 @@
     }
 
     <!-- Client Dashboard -->
-    @if (User.HasClaim(c => c.Type == SD.Role_Client))
+    else if (User.HasClaim(c => c.Type == SD.Role_Client))
     {
         <h4 class="fw-bold text-primary text-center mb-3">
             <i class="bi bi-person"></i> لوحة تحكم العميل
@@ -220,222 +219,12 @@
 
         </div>
     }
-
-</div>
-
-@* <div class="container mt-4">
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body text-center p-4 bg-light rounded">
-            <h1 class="fw-bold text-primary mb-2">
-                <i class="bi bi-paint-bucket"></i> GLC للدهانات
-            </h1>
-            <p class="text-muted fs-5">
-                نظام إدارة الفواتير والنقاط للمحلات والفروع
-            </p>
-        </div>
+    else 
+    {
+    <div class="d-flex text-dark justify-content-center align-items-center gap-2 mb-4">
+        <img src="~/icons8-invoice-100.png" width="300" height="300">
     </div>
 
-    @if (User.HasClaim(c => c.Type == SD.Role_Admin))
-    {
-        <h4 class="fw-bold text-danger text-center mb-3">
-            <i class="bi bi-shield-lock"></i> لوحة تحكم المدير
-        </h4>
-
-        <div class="row g-3 mb-5">
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a asp-controller="Invoice" asp-action="Index" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-receipt fs-3 text-danger"></i>
-                            <h6 class="fw-bold mt-2">كل الفواتير</h6>
-                            <p>استعراض جميع الفواتير</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-4">
-                <a asp-controller="Invoice" asp-action="Index" asp-route-filter="@SD.hasPoints" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-check-circle fs-3 text-primary"></i>
-                            <h6 class="fw-bold mt-2"> تم المراجعة</h6>
-                            <p>   فواتير بنقاط  </p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a asp-controller="Invoice" asp-action="Index" asp-route-filter="@SD.zeroPoints" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-clock-history fs-3 text-warning"></i>
-                            <h6 class="fw-bold mt-2">قيد المراجعة</h6>
-                            <p>فواتير بدون نقاط</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a asp-controller="Customer" asp-action="Customers" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-people fs-3 text-primary"></i>
-                            <h6 class="fw-bold mt-2">العملاء</h6>
-                            <p>إدارة حسابات العملاء</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!--soon-->
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-person-badge fs-3 text-success"></i>
-                            <h6 class="fw-bold mt-2">الموظفين</h6>
-                            <p>إدارة موظفي الفروع</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a asp-controller="Store" asp-action="Index" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-shop fs-3 text-secondary"></i>
-                            <h6 class="fw-bold mt-2">محلات GLC</h6>
-                            <p>عرض الفروع والمحلات</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!--soon-->
-
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-arrow-repeat fs-3 text-dark"></i>
-                            <h6 class="fw-bold mt-2">سنة جديدة</h6>
-                            <p>إعادة ضبط النظام السنوي</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
     }
-
-    @if (User.HasClaim(c => c.Type == SD.Role_Employee))
-    {
-        <h4 class="fw-bold text-success text-center mb-3">
-            <i class="bi bi-person-badge"></i> لوحة تحكم الموظف
-        </h4>
-
-        <div class="row g-3 mb-5">
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-shop fs-3 text-success"></i>
-                            <h6 class="fw-bold mt-2">فواتير المحل</h6>
-                            <p>فواتير الفرع التابع له</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-clock fs-3 text-warning"></i>
-                            <h6 class="fw-bold mt-2">قيد المراجعة</h6>
-                            <p>فواتير تحتاج اعتماد</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-check-circle fs-3 text-primary"></i>
-                            <h6 class="fw-bold mt-2">اعتماد الفواتير</h6>
-                            <p>الموافقة على الفواتير</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    }
-  
-    @if (User.HasClaim(c => c.Type == SD.Role_Client))
-    {
-        <h4 class="fw-bold text-primary text-center mb-3">
-            <i class="bi bi-person"></i> لوحة تحكم العميل
-        </h4>
-
-        <div class="row g-3">
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-plus-circle fs-3 text-primary"></i>
-                            <h6 class="fw-bold mt-2">إضافة فاتورة</h6>
-                            <p>تسجيل فاتورة جديدة</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-receipt fs-3 text-secondary"></i>
-                            <h6 class="fw-bold mt-2">فواتيري</h6>
-                            <p>عرض جميع الفواتير</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-shop fs-3 text-secondary"></i>
-                            <h6 class="fw-bold mt-2">محلات GLC</h6>
-                            <p>عرض الفروع والمحلات</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-6 col-md-4">
-                <a href="#" class="dash-card">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-star-fill fs-3 text-warning"></i>
-                            <h6 class="fw-bold mt-2">نقاطي</h6>
-                            <p>رصيد النقاط الحالي</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    }
-
-
 </div>
- *@
+

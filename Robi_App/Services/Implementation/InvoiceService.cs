@@ -72,7 +72,7 @@ namespace Robi_App.Services.Implementation
 
         public IEnumerable<ShowInvoiceVM> showInvoices(Expression<Func<Invoice, bool>> filter = null!)
         {
-            var query = _db.Invoices.AsQueryable(); 
+            var query = _db.Invoices.AsNoTracking().AsQueryable(); 
             if (filter != null)
                 query = query.Where(filter);   
             

@@ -85,9 +85,8 @@
                         </div>
 
                         <div class="modal-body">
-                            <form method="post" asp-controller="Invoice" asp-action="UpdatePoints" id="@info.Id">
+                            <form method="post" asp-controller="Invoice" asp-action="UpdatePoints" asp-route-url="@(Context.Request.Path + Context.Request.QueryString )" id="@info.Id">
                                 <input name="Id" value="@info.Id" hidden />
-                                <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
 
                                 <div class="mb-3">
                                     <label class="form-label"><i class="bi bi-upc-scan"></i> كود الفاتورة</label>

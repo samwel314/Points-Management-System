@@ -10,10 +10,13 @@ namespace Robi_App.Controllers
     [Authorize (policy: SD.Role_Admin)]
     public class StoreController : Controller
     {
-        private readonly IStoreService _service; 
-        public StoreController(IStoreService service)
+        private readonly IStoreService _service;
+        private readonly IInvoiceService _invoiceService;
+
+        public StoreController(IStoreService service, IInvoiceService invoiceService)
         {
             _service = service;
+            _invoiceService = invoiceService;
         }
 
         public IActionResult Index()
@@ -92,19 +95,32 @@ namespace Robi_App.Controllers
         [HttpPost]
         public IActionResult Delete(Store store)
         {
+     
         
             if (!_service.StoreExists(store.Id))
             {
                 TempData["Message"] = "Sorry ! This Store Not Found";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
             }
             _service.DeleteStore(store);
             return RedirectToAction("Index");
         }
 
-        public IActionResult ShowInvoices ()
+        public IActionResult ShowInvoices (int Id)
         {
-            return View();  
+            var store = _service.ShowStoreInvoicesVM    (Id);   
+            if (store is null)
+            {
+                TempData["Message"] = "Sorry ! This Store Not Found";
+                return RedirectToAction("Error", "Home" , new {});
+            }
+            // employee auth logic 
+
+            store.Invoices = _invoiceService.showInvoices (i => i.StoreId == Id);
+            return View(store);  
         }
     }
 }

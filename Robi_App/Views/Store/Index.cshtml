@@ -50,8 +50,8 @@
                                 <i class="bi bi-trash"></i> حذف
                             </a>
 
-                            <a asp-controller="Invoice" asp-action="ByStore"
-                               asp-route-storeId="@store.Id"
+                            <a asp-controller="Store" asp-action="ShowInvoices"
+                               asp-route-Id="@store.Id"
                                class="btn btn-outline-secondary btn-sm flex-fill"
                                title="عرض الفواتير">
                                 <i class="bi bi-receipt"></i> فواتير

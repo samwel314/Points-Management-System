@@ -1,35 +1,31 @@
-﻿
+﻿@model ShowStoreInvoicesVM
+@{
+    int idCount = 0; ;
+
+}
 <div class="container mt-4" dir="rtl">
 
-    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <h4 class="fw-bold mb-0 text-primary">
             <i class="bi bi-receipt-cutoff ms-2"></i>
-            فواتير الفرع
+            فواتير فرع @Model.StoreName
         </h4>
-
-        <a asp-controller="Invoice" asp-action="Create"
-           class="btn btn-success fw-bold">
-            <i class="bi bi-plus-circle ms-1"></i>
-            إضافة فاتورة
-        </a>
     </div>
 
-    <!-- Summary -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="card shadow-sm text-center">
                 <div class="card-body">
                     <h6 class="text-muted">إجمالي الفواتير</h6>
-                    <h4 class="fw-bold text-primary">125</h4>
+                    <h4 class="fw-bold text-primary">@Model.TotalInvoices</h4>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card shadow-sm text-center">
                 <div class="card-body">
-                    <h6 class="text-muted">إجمالي المبلغ</h6>
-                    <h4 class="fw-bold text-success">45,200 ج.م</h4>
+                    <h6 class="text-muted"> فواتير الشهر </h6>
+                    <h4 class="fw-bold text-success">@Model.TotalToMonthInvoices</h4>
                 </div>
             </div>
         </div>
@@ -37,16 +33,16 @@
             <div class="card shadow-sm text-center">
                 <div class="card-body">
                     <h6 class="text-muted">فواتير اليوم</h6>
-                    <h4 class="fw-bold text-warning">8</h4>
+                    <h4 class="fw-bold text-warning">@Model.TotalToDayInvoices</h4>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Invoices -->
     <div class="row g-3">
 
-        
+        @foreach(var i in Model.Invoices)
+        {
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card shadow-sm h-100 border-0">
 
@@ -54,46 +50,82 @@
 
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="badge bg-primary">
-                                فاتورة #invoice.Id
+                            @i.code      
+                            </span> <span class="badge bg-success">
+                              نقطة @i.Points
                             </span>
                             <span class="text-muted small">
-                                invoice.Date.ToString("dd/MM/yyyy")
+                                @i.Date
                             </span>
                         </div>
 
                         <h6 class="fw-bold mb-2">
                             <i class="bi bi-person ms-1"></i>
-                            invoice.CustomerName
+                            @i.UserName
                         </h6>
 
                         <p class="mb-2 text-muted small">
                             <i class="bi bi-telephone ms-1"></i>
-                            invoice.CustomerPhone
+                            @i.Phone
+
                         </p>
+                    </div>
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-outline-primary fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#@(idCount)editPointsModal">
+                            <i class="bi bi-pencil-square me-2"></i> تعديل النقاط
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-                        <h5 class="fw-bold text-success mb-3">
-                            invoice.TotalAmount.ToString("N0") ج.م
-                        </h5>
 
-                        <div class="d-flex gap-2">
-                            <a asp-action="Details" asp-route-id="invoice.Id"
-                               class="btn btn-outline-primary btn-sm flex-fill">
-                                <i class="bi bi-eye"></i>
-                                التفاصيل
-                            </a>
+            <div class="modal fade" id="@(idCount)editPointsModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
 
-                            <a asp-action="Delete" asp-route-id="invoice.Id"
-                               class="btn btn-outline-danger btn-sm flex-fill">
-                                <i class="bi bi-trash"></i>
-                                حذف
-                            </a>
+                        <div class="modal-header text-center">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                            <h5 class="modal-title fw-bold ">
+                                <i class="bi bi-pencil-square  me-2"></i> تعديل نقاط الفاتورة
+                            </h5>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="post" asp-controller="Invoice" asp-action="UpdatePoints" asp-route-url="@(Context.Request.Path + Context.Request.QueryString )" id="@i.Id">
+                                <input name="Id" value="@i.Id" hidden />
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold"><i class="bi bi-upc-scan me-2"></i> رمز الفاتورة</label>
+                                    <input asp-for="@i.code" class="form-control" readonly>
+                                </div>
+
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold"><i class="bi bi-person-circle me-2"></i> العميل</label>
+                                    <input asp-for="@i.UserName" class="form-control" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold"><i class="bi bi-stars me-2"></i> النقاط</label>
+                                    <input type="number" name="Points" value="@i.Points" class="form-control fw-bold" min="0">
+                                </div>
+
+                                <div class="modal-footer d-grid">
+                                    <button type="submit" class="btn btn-success fw-bold">
+                                        <i class="bi bi-check-circle me-2"></i> حفظ النقاط
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
                     </div>
-
                 </div>
             </div>
+            idCount++ ; 
         }
+        
 
     </div>
 

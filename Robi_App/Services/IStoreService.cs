@@ -1,4 +1,5 @@
 ﻿using Robi_App.Models;
+using Robi_App.Models.ViewModels;
 
 namespace Robi_App.Services
 {
@@ -10,5 +11,7 @@ namespace Robi_App.Services
         void UpdateStore(Store store);
         void DeleteStore(Store store);
         bool StoreExists(int id);
+
+        ShowStoreInvoicesVM ShowStoreInvoicesVM(int id);  
     }
 }
