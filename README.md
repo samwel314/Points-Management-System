@@ -87,7 +87,6 @@ The system is designed to be **scalable** and to reflect real production-level A
 git clone https://github.com/samwel314/Points-Management-System.git
 cd Points-Management-System
 dotnet restore
-dotnet ef database update
 dotnet run
 
 
