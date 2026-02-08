@@ -74,6 +74,11 @@ The system is designed to be **scalable** and to reflect real production-level A
 
 ---
 
+
+<img width="1360" height="632" alt="r1" src="https://github.com/user-attachments/assets/e94691ca-ed57-4e69-b5bf-8459ef12b65d" />
+<img width="1348" height="613" alt="r2" src="https://github.com/user-attachments/assets/73400b32-886e-42f7-9461-3b64674e7b28" />
+<img width="1360" height="635" alt="r3" src="https://github.com/user-attachments/assets/b0095465-8cbd-448a-aabd-0eb06efd415b" />
+<img width="1349" height="632" alt="r4" src="https://github.com/user-attachments/assets/0b09f08c-e852-4e0b-9ada-8e1d698d9fda" />
 ## ⚙️ Run Locally
 
 ### Prerequisites
@@ -92,3 +97,8 @@ dotnet run
 
 
 > 📢 This project is used as a practical reference for explaining Authorization Design and IDOR Prevention in technical content on LinkedIn.
+
+
+
+
+
