@@ -4,6 +4,9 @@
 
 The project focuses mainly on **proper Authorization design**, preventing common security issues such as **IDOR (Insecure Direct Object Reference)**, and applying clean separation of responsibilities.
 
+**
+UI built with Bootstrap — backend focus is on authorization, EF Core, and clean architecture.
+**
 ---
 
 ## 🧠 Project Idea
