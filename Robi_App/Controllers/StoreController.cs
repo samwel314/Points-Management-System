@@ -41,7 +41,8 @@ namespace Robi_App.Controllers
                 {
                     statusCode = 400
                 });
-            }
+            } 
+            store.S_char = GetNextChar(); 
             _service.AddStore(store);   
             return RedirectToAction("Index");
         }
@@ -120,6 +121,21 @@ namespace Robi_App.Controllers
 
             store.Invoices = _invoiceService.showInvoices (null!,  i => i.StoreId == Id);
             return View(store);  
+        }
+                                                             
+        private char GetNextChar ()
+        {
+            char S_char =  ' ';
+            var cahrsFromDB = _service.GetStores(false).Select(s => s.S_char);
+            for (int i =  65;  i <= 90; i++  )
+            {
+                if (!cahrsFromDB.Any(c => c == (char)i))
+                {
+                    S_char = (char)i;
+                    break;
+                }
+            }
+            return S_char;  
         }
     }
 }
