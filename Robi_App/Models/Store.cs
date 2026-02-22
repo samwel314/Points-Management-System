@@ -13,5 +13,6 @@ namespace Robi_App.Models
         [MaxLength(300 , ErrorMessage = "Store Location Must Be Great Than 9 Chars")]
         [MinLength(10 , ErrorMessage = "Store Location Must Be Great Than 9 Chars")]
         public string Location { get; set; } = null!; 
+        public char S_char { get; set; }    
     }
 }
