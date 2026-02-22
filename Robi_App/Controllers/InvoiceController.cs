@@ -55,7 +55,7 @@ namespace Robi_App.Controllers
             var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true); 
             if (invoicefromDB is null  )
             {
-                TempData["Message"] = "This Invoice Not Found !";
+                TempData["Message"] = "! هذه الفاتورة غير موجود ";
                 return RedirectToAction("Error", "Home", new
                 {
                     statusCode = 404
@@ -112,7 +112,7 @@ namespace Robi_App.Controllers
                     Text = s.Title,
                 }).ToList();
                 if (isExisting)
-                    ModelState.AddModelError("Code", "This Invoice Number Is Used Before");
+                    ModelState.AddModelError("Code", "   كود الفاتورة غير صالح    ");
                 return View(model);
             }
 
@@ -129,8 +129,7 @@ namespace Robi_App.Controllers
             // Authorization
             if (invoiceFromDB is null     )
             {
-                TempData["Message"] = 
-                    "This Invoice Not Found !";
+                TempData["Message"] = "! هذه الفاتورة غير موجود ";
                 return RedirectToAction("Error", "Home" , new 
                 {
                     statusCode = 404
@@ -202,7 +201,7 @@ namespace Robi_App.Controllers
                 bool isExisting = _invoiceService.IsCodeExisting(model.Code);
                 if (isExisting)
                 {
-                    ModelState.AddModelError("Code", "This Invoice Number Is Used Before");
+                    ModelState.AddModelError("Code", "   كود الفاتورة غير صالح    ");
                     model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
                     {
                         Value = s.Id.ToString(),
