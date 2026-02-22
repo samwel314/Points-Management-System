@@ -10,7 +10,7 @@ namespace Robi_App.Models.ViewModels
         public int Id { get; set; }
         public int StoreId { get; set; }    
         [Display(Name = "Invoice Number")]
-        [Required(ErrorMessage = "Enter Invoice Number")]
+        [Required(ErrorMessage = "ادخل كود الفاتورة ")]
         [MinLength(1)]
         [MaxLength(25)]
         public string Code { get; set; } = null!;

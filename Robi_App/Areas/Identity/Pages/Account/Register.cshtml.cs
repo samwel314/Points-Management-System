@@ -85,21 +85,23 @@ namespace Robi_App.Areas.Identity.Pages.Account
             /// </summary>
 
             [Display(Name = "Full Name")]
-            [Required(ErrorMessage = "Enter User Full Name ")]
+            [Required(ErrorMessage = "ادخل الاسم بالكامل  ")]
             public string FullName { get; set; }    
             [RegularExpression(@"^01[0-2,5]{1}[0-9]{8}$",
-              ErrorMessage = "Invalid phone number")]
-            [Required]
+              ErrorMessage = "هذ الرقم غير صحيح  ")]
+            [Required (ErrorMessage = "ادخل رقم الهاتف")]
             public string PhoneNumber { get; set; }
-            [Required (ErrorMessage = "Select User Role")]
+            [Required (ErrorMessage = "اختار نوع الحساب ")]
             public string Role { get; set; }
             
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
+            [Required (ErrorMessage = "ادخل كلمة السر ")]
+            [StringLength(20, MinimumLength = 3,
+    ErrorMessage = "{0} يجب أن يكون على الأقل {2} أحرف وبحد أقصى {1} أحرف.")]
+            [Compare("Password", ErrorMessage = "كلمة المرور وتأكيدها غير متطابقين.")]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -110,9 +112,8 @@ namespace Robi_App.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "كلمة المرور وتأكيدها غير متطابقين.")] 
             public string ConfirmPassword { get; set; }
-
             public int StoreId { get; set; }    
 
             public IEnumerable <SelectListItem> Stores { get; set; }    
