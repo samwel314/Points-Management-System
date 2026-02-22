@@ -8,6 +8,7 @@ using Robi_App.AuthorizationRequirement;
 using Robi_App.AuthorizationRequirement.Handler;
 using Robi_App.Data;
 using Robi_App.Data.DBInitializer;
+using Robi_App.Identity_Error_Describer;
 using Robi_App.Models;
 using Robi_App.Services;
 using Robi_App.Services.Implementation;
@@ -30,7 +31,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(opt =>
     opt.Password.RequireDigit = false;  
     opt.Password.RequireLowercase = false;
     opt.Password.RequireUppercase = false;  
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+})
+     .AddErrorDescriber<ArabicIdentityErrorDescriber>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IStoreService , StoreService>();
