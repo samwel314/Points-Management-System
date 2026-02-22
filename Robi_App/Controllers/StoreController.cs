@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Robi_App.Models;
 using Robi_App.Services;
+using Robi_App.Services.Implementation;
 using System.Collections.Immutable;
 
 namespace Robi_App.Controllers
@@ -122,7 +123,7 @@ namespace Robi_App.Controllers
             store.Invoices = _invoiceService.showInvoices (null!,  i => i.StoreId == Id);
             return View(store);  
         }
-                                                             
+
         private char GetNextChar ()
         {
             char S_char =  ' ';
@@ -138,4 +139,5 @@ namespace Robi_App.Controllers
             return S_char;  
         }
     }
+
 }

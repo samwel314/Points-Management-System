@@ -1,0 +1,84 @@
+﻿@model IEnumerable<EmployeeVM>
+
+@{
+    ViewData["Title"] = "الموظفين";
+}
+<div class="container mt-4">
+<!-- زر العودة -->
+<div class="mb-3 text-start">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary fw-bold">
+        <i class="bi bi-arrow-left fw-bold"></i> العودة للرئيسية
+    </a>
+</div>
+
+<!-- العنوان وزر إضافة محل جديد -->
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h2 class="fw-bold mb-0 text-primary">
+        <i class="bi bi-shop-window me-2"></i> الموظفين
+    </h2>
+
+</div>
+
+<div class="row g-4">
+    @foreach (var emp in Model)
+    {
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+
+                    <div class="text-center mb-3">
+                        <i class="bi bi-person-circle text-primary" style="font-size: 3rem;"></i>
+                        <h5 class="fw-bold mt-2">@emp.FullName</h5>
+                    </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-2 small">
+                            <span class="copy-target fw-bold text-primary fs-5">@emp.PhoneNumber</span>
+                            <button class="btn btn-outline-success btn-sm"
+                                    onclick="copyValue(this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3 small">
+                            <span class="copy-target fw-bold text-danger fs-5">@emp.PassWord</span>
+                            <button class="btn btn-outline-warning btn-sm"
+                                    onclick="copyValue(this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    <a asp-action="Details"
+                       asp-route-id="@emp.EmployeeId"
+                       class="btn btn-primary btn-sm w-100 fw-bold fs-5">
+                        عرض التفاصيل
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyValue(button) {
+
+            const container = button.closest("div");
+            const target = container.querySelector(".copy-target");
+
+            if (!target) return;
+
+            const text = target.textContent.trim();
+            navigator.clipboard.writeText(text);
+
+            const originalHTML = button.innerHTML;
+
+            button.innerHTML = '<i class="bi bi-check2-circle"></i>';
+            button.disabled = true;
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+            }, 1500);
+        }
+    </script>
+}

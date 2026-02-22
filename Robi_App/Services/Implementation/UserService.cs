@@ -28,5 +28,19 @@ namespace Robi_App.Services.Implementation
                 PassWord = u.TemporaryPassword, 
              }).ToList();  
         }
+
+        public async Task<IEnumerable<EmployeeVM>> GetAllEmployees()
+        {
+            var employees = await _userManager.GetUsersForClaimAsync
+                (new Claim(SD.Role_Employee, SD.Role_Employee));
+
+            return employees.Select(u => new EmployeeVM
+            {
+                EmployeeId = u.Id,
+                FullName = u.FullName,
+                PhoneNumber = u.UserName!,
+                PassWord = u.TemporaryPassword,
+            }).ToList();
+        }
     }
 }
