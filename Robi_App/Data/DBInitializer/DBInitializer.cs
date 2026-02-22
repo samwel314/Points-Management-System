@@ -33,7 +33,7 @@ namespace Robi_App.Data.DBInitializer
             }
             var appUser =
                 _db.ApplicationUsers.FirstOrDefault(u => u.UserName ==
-                "01066389260");
+                "d@app.com");
             if (appUser is null)
             {
                 _usermanager.CreateAsync(new ApplicationUser
