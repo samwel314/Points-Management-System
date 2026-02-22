@@ -74,17 +74,23 @@
 @section Scripts {
     <script>
         function copyValue(button) {
-            const text = button.previousElementSibling.innerText;
-            navigator.clipboard.writeText(text);
+    // نبحث عن span داخل نفس الـ div الأب
+    const container = button.closest("div");
+    const target = container.querySelector("span");
+    if (!target) return; // لو span مش موجود نتجاهل
 
-            const originalHTML = button.innerHTML;
-            button.innerHTML = '<i class="bi bi-check2-circle"></i> تم النسخ';
-            button.disabled = true;
+    const text = target.textContent.trim();
+    navigator.clipboard.writeText(text);
 
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.disabled = false;
-            }, 1500);
-        }
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="bi bi-check2-circle"></i> تم النسخ';
+    button.disabled = true;
+
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+    }, 1500);
+}  
+      
     </script>
 }
