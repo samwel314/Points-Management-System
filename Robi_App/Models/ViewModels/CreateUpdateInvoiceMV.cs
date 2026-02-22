@@ -11,7 +11,7 @@ namespace Robi_App.Models.ViewModels
         public int StoreId { get; set; }    
         [Display(Name = "Invoice Number")]
         [Required(ErrorMessage = "Enter Invoice Number")]
-        [MinLength(7)]
+        [MinLength(1)]
         [MaxLength(25)]
         public string Code { get; set; } = null!;
         [ValidateNever] // get it from current user 
