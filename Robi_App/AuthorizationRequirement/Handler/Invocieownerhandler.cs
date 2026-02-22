@@ -17,7 +17,7 @@ namespace Robi_App.AuthorizationRequirement.Handler
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, IsInvoiceOwnerRequirement requirement, Invoice resource)
         {
             var user = await _userManager.GetUserAsync(context.User); 
-            if (user == null) 
+            if (user == null || resource == null) 
                 return;
             if (user.Id == resource.UserId)
             {

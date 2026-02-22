@@ -93,7 +93,16 @@ namespace Robi_App.Controllers
         [HttpPost]
         public IActionResult Create (CreateUpdateInvoiceVM model)
         {
-        
+            char? storeChar = _storeService.GetStoreChar(model.StoreId); 
+            if (storeChar == null)
+            {
+                TempData["Message"] = "هذا الفرع غير متاح  ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+            model.Code = $"{storeChar}-{model.Code}"; 
             bool isExisting = _invoiceService.IsCodeExisting(model.Code); 
             if (!ModelState.IsValid || isExisting)
             {
@@ -137,7 +146,7 @@ namespace Robi_App.Controllers
             CreateUpdateInvoiceVM viewModel = new CreateUpdateInvoiceVM()
             {
                 Id = Id,    
-                Code = invoiceFromDB.Code,  
+                Code = invoiceFromDB.Code.Remove(0 , 2),  
                 UserId = invoiceFromDB.UserId ,
                 StoreId = invoiceFromDB.StoreId ,
                 Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
@@ -165,20 +174,29 @@ namespace Robi_App.Controllers
                         statusCode = 404
                     });
                 }
-                var authResult = await _authorizationService
-               .AuthorizeAsync(User, invoiceFromDB, "CanUpdateInvoice");
-                if (!authResult.Succeeded)
-                {
-                    return new ForbidResult();
-                }
-                // in every case 
-                model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
+                               model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
                 {
                     Value = s.Id.ToString(),
                     Text = s.Title,
                 }).ToList();
                 return View(model); 
             }
+            var authResult = await _authorizationService
+              .AuthorizeAsync(User, invoiceFromDB, "CanUpdateInvoice");
+            if (!authResult.Succeeded)
+            {
+                return new ForbidResult();
+            }
+            char? storeChar = _storeService.GetStoreChar(model.StoreId);
+            if (storeChar == null)
+            {
+                TempData["Message"] = "هذا الفرع غير متاح  ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+            model.Code = $"{storeChar}-{model.Code}";
             if (invoiceFromDB.Code != model.Code)
             {
                 bool isExisting = _invoiceService.IsCodeExisting(model.Code);
