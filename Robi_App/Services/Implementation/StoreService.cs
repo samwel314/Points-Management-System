@@ -69,6 +69,11 @@ namespace Robi_App.Services.Implementation
                 TotalToMonthInvoices = _db.Invoices.Where(i => i.StoreId == id && i.CreatedAt >= firstDayOfMonth && i.CreatedAt < firstDayOfNextMonth ).Count(),
             }; 
         }
- 
+
+        public char? GetStoreChar(int id)
+        {
+            return _db.Stores.Where(s => s.Id == id)
+                .Select(s =>s.S_char).SingleOrDefault(); 
+        }
     }
 }

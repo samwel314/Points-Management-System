@@ -11,6 +11,7 @@ namespace Robi_App.Services
         void UpdateStore(Store store);
         void DeleteStore(Store store);
         bool StoreExists(int id);
+        char? GetStoreChar (int id);
 
         ShowStoreInvoicesVM ShowStoreInvoicesVM(int id);  
     }
