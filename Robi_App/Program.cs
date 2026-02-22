@@ -23,8 +23,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(opt => 
+{
+    opt.Password.RequiredLength = 3;
+    opt.Password.RequireNonAlphanumeric = false; 
+    opt.Password.RequireDigit = false;  
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireUppercase = false;  
+}).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IStoreService , StoreService>();
