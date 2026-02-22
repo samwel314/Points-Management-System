@@ -93,14 +93,7 @@ namespace Robi_App.Controllers
         [HttpPost]
         public IActionResult Create (CreateUpdateInvoiceVM model)
         {
-            if (!User.Identity!.IsAuthenticated)
-            {
-                TempData["Message"] = "You May Not Allowed To Do This Action !";
-                return RedirectToAction("Error", "Home" , new
-                {
-                    statusCode = 403
-                });
-            }
+        
             bool isExisting = _invoiceService.IsCodeExisting(model.Code); 
             if (!ModelState.IsValid || isExisting)
             {
