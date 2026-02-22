@@ -30,7 +30,7 @@ namespace Robi_App.Services.Implementation
 
         public CustomerProfileVM GetCustomerProfile(string Id)
         {
-            var user = _db.ApplicationUsers.First(u => u.Id == Id);
+            var user = _db.ApplicationUsers.FirstOrDefault(u => u.Id == Id);
             if (user == null)
                 return null!;
 
