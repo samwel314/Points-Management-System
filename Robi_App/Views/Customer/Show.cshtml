@@ -27,7 +27,6 @@
             <span class="badge bg-success fs-6">
                 ⭐ إجمالي النقاط  @Model.TotalPoints
             </span>
-
             <div class="mt-2">
                 @if (Model.IsLocked)
                 {
@@ -37,16 +36,28 @@
                 }
                 else
                 {
-                    <a asp-controller="User" asp-action="Lock" asp-route-Id="@Model.CustomerId" asp-route-url="@Context.Request.Path" class="btn btn-outline-danger btn-sm fw-bold">
+                    <a asp-controller="User" asp-action="Lock" asp-route-Id="@Model.CustomerId" asp-route-url="@Context.Request.Path" class="btn btn-outline-warning btn-sm fw-bold">
                         <i class="bi bi-person-x"></i> تعطيل الحساب
                     </a>
-
                 }
             </div>
             <div class="mt-2">
-                <a asp-controller="User" asp-action="Lock" asp-route-Id="@Model.CustomerId" asp-route-url="@Url.Action("Customers", "Customer")" class="btn btn-outline-danger btn-sm fw-bold">
-                    <i class="bi bi-person-x"></i> مسح الحساب
-                </a>
+
+                <button type="button" class="btn btn-outline-danger btn-sm fw-bold" onclick="document.getElementById('deleteFormContainer').style.display='block'">
+                    مسح الحساب
+                </button>
+            </div>
+
+            <div id="deleteFormContainer" style="display:none; margin-top:10px;">
+                <form method="post" asp-controller="User" asp-action="Delete">
+                    <input type="hidden" name="Id" value="@Model.CustomerId" />
+                    <input type="hidden" name="url" value="@Url.Action("Customers", "Customer")" />
+
+                    <p>هل أنت متأكد أنك تريد مسح الحساب نهائيًا؟</p>
+
+                    <button type="submit" class="btn btn-danger btn-sm fw-bold">نعم، امسح الحساب</button>
+                    <button type="button" class="btn btn-secondary btn-sm fw-bold" onclick="document.getElementById('deleteFormContainer').style.display='none'">إلغاء</button>
+                </form>
             </div>
         </div>
     </div>
