@@ -33,18 +33,18 @@ namespace Robi_App.Data.DBInitializer
             }
             var appUser =
                 _db.ApplicationUsers.FirstOrDefault(u => u.UserName ==
-                "d@app.com");
+                "01005415303");
             if (appUser is null)
             {
                 _usermanager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "d@app.com",
-                    FullName = "user app"
-                }, "A@123489").GetAwaiter().GetResult();
+                    UserName = "01005415303",
+                    FullName = "Demo Admin"
+                }, "123456").GetAwaiter().GetResult();
 
                 appUser =
                    _db.ApplicationUsers.FirstOrDefault(u => u.UserName ==
-                   "d@app.com");
+                   "01005415303");
 
                 _usermanager.AddClaimAsync(appUser!,
                        new Claim(SD.Role_Admin , SD.Role_Admin) 

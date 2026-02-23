@@ -9,7 +9,13 @@
     }
 }
 
-
+<div class="container mt-4">
+    <!-- زر العودة -->
+    <div class="mb-3 text-start">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary fw-bold">
+            <i class="bi bi-arrow-left fw-bold"></i> العودة للرئيسية
+        </a>
+    </div>
 
 <div class="mt-5">
     <h1>لوحة التحكم فى حسابك </h1>
@@ -22,6 +28,7 @@
             @RenderBody()
         </div>
     </div>
+</div>
 </div>
 
 @section Scripts {
