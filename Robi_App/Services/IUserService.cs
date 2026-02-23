@@ -6,5 +6,6 @@ namespace Robi_App.Services
     {
         Task<IEnumerable <CustomerProfileVM>> GetAllCustomers();
         Task <IEnumerable <EmployeeVM>> GetAllEmployees();   
+        Task<EmployeeVM> GetEmployee(string id);
     }
 }

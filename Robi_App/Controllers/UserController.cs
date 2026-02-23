@@ -11,10 +11,12 @@ namespace Robi_App.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task<IActionResult> Lock(string id , string url)
@@ -69,6 +71,21 @@ namespace Robi_App.Controllers
             if (url != null)
                 return Redirect(url);
             return RedirectToAction("index", "home");
+        }
+
+        public async Task<IActionResult> Details (string id)
+        {
+            var emp = await _userService.GetEmployee(id);
+            if (emp == null)
+            {
+                TempData["Message"] = "هذا الموظف غير موجود";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+
+            return View(emp);   
         }
 
     }
