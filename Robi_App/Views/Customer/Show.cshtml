@@ -29,11 +29,25 @@
             </span>
 
             <div class="mt-2">
-                <button class="btn btn-outline-danger btn-sm fw-bold">
-                    <i class="bi bi-person-x"></i> تعطيل الحساب
-                </button>
-            </div>
+                @if (Model.IsLocked)
+                {
+                    <a asp-controller="User" asp-action="UnLock" asp-route-Id="@Model.CustomerId" asp-route-url="@Context.Request.Path" class="btn btn-outline-success btn-sm fw-bold">
+                        <i class="bi bi-person-x"></i> الغاء تعطيل الحساب
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="User" asp-action="Lock" asp-route-Id="@Model.CustomerId" asp-route-url="@Context.Request.Path" class="btn btn-outline-danger btn-sm fw-bold">
+                        <i class="bi bi-person-x"></i> تعطيل الحساب
+                    </a>
 
+                }
+            </div>
+            <div class="mt-2">
+                <a asp-controller="User" asp-action="Lock" asp-route-Id="@Model.CustomerId" asp-route-url="@Url.Action("Customers", "Customer")" class="btn btn-outline-danger btn-sm fw-bold">
+                    <i class="bi bi-person-x"></i> مسح الحساب
+                </a>
+            </div>
         </div>
     </div>
 

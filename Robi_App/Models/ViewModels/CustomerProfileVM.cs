@@ -4,6 +4,7 @@
     {
         public int TotalPoints { get; set; }
         public string CustomerId { get; set; } = null!;
+        public bool IsLocked { get; set; }   
         public string PhoneNumber { get; set; } = null!; 
         public string CustomerName { get; set; } = null!;
         public string PassWord { get; set; } = null!;   

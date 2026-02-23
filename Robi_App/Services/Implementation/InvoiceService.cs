@@ -39,6 +39,7 @@ namespace Robi_App.Services.Implementation
                 CustomerId = Id,
                 CustomerName = user.FullName , 
                 PhoneNumber = user.UserName! ,
+                IsLocked = user.LockoutEnd > DateTime.UtcNow ? true : false,
                 Invoices = _db.Invoices.Where(i => i.UserId == Id).Select(i => new ShowInvoiceVM
                 {
                     Points = i.Points,
