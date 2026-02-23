@@ -67,6 +67,12 @@ namespace Robi_App.Services.Implementation
             return _db.Invoices.Any(x => x.Code == code);   
         }
 
+        public  async Task RestYear()
+        {
+            _db.Invoices.RemoveRange(_db.Invoices);
+          await  _db.SaveChangesAsync();  
+        }
+
         public void Save()
         {
             _db.SaveChanges();  

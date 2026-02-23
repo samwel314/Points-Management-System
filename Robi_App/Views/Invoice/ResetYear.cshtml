@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "سنة جديدة ";
+}
+
+<div class="container mt-4">
+
+ 
+
+        <!-- زر العودة على الشمال -->
+        <div class="mb-4 text-start">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary fw-bold px-4 py-2 shadow-sm">
+                <i class="bi bi-arrow-left me-2"></i> العودة للرئيسية
+            </a>
+        </div>
+
+    <h3>إعادة ضبط الفواتير للسنة الجديدة</h3>
+    <p>
+        <strong>
+            عند الضغط على الزر أدناه، كل الفواتير الحالية سيتم حذفها من النظام وسيبدأ النظام استقبال فواتير جديدة من البداية.
+        </strong>
+    </p>
+
+    <!-- زر إظهار الفورم -->
+    <button type="button" class="btn btn-warning fw-bold" onclick="document.getElementById('confirmForm').style.display='block'">
+        مسح الفواتير والبدء من جديد
+    </button>
+
+    <!-- الفورم المخفي -->
+    <div id="confirmForm" style="display:none; margin-top:20px;">
+        <form asp-controller="Invoice" asp-action="ResetYearPost" method="post">
+            <p class="text-danger fw-bold">
+                هل أنت متأكد أنك تريد مسح كل الفواتير والبدء من جديد؟
+            </p>
+
+            <button type="submit" class="btn btn-danger fw-bold">نعم، امسح الكل</button>
+            <button type="button" class="btn btn-secondary fw-bold" onclick="document.getElementById('confirmForm').style.display='none'">
+                إلغاء
+            </button>
+        </form>
+    </div>
+</div>

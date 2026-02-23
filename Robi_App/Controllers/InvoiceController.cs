@@ -220,5 +220,21 @@ namespace Robi_App.Controllers
             return RedirectToAction("Index" , "Customer"); 
         }
 
+
+        [Authorize(policy: SD.Role_Admin)]
+
+        public IActionResult ResetYear()
+        {
+            return View();
+        }
+        [Authorize(policy: SD.Role_Admin)]
+
+        [HttpPost]
+        public async Task<IActionResult> ResetYearPost()
+        {
+            await _invoiceService.RestYear();
+            return RedirectToAction("Index", "Home"); 
+        }
+
     }
 }

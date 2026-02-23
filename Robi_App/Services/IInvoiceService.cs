@@ -15,6 +15,8 @@ namespace Robi_App.Services
 
         public CustomerProfileVM GetCustomerProfile(string Id);
 
-        public IEnumerable<ShowInvoiceVM> showInvoices(ClaimsPrincipal user , Expression<Func<Invoice , bool > > filter = null!); 
+        public IEnumerable<ShowInvoiceVM> showInvoices(ClaimsPrincipal user , Expression<Func<Invoice , bool > > filter = null!);
+
+        public Task RestYear(); 
     }
 }
