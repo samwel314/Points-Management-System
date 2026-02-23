@@ -130,7 +130,7 @@ namespace Robi_App.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, " رقم العاتف غير صحيح او كلمة السر غير صحيحة  ");
                     return Page();
                 }
             }

@@ -101,7 +101,6 @@ namespace Robi_App.Areas.Identity.Pages.Account
             [Required (ErrorMessage = "ادخل كلمة السر ")]
             [StringLength(20, MinimumLength = 3,
     ErrorMessage = "{0} يجب أن يكون على الأقل {2} أحرف وبحد أقصى {1} أحرف.")]
-            [Compare("Password", ErrorMessage = "كلمة المرور وتأكيدها غير متطابقين.")]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
