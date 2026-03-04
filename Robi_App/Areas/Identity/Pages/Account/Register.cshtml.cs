@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
@@ -26,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace Robi_App.Areas.Identity.Pages.Account
 {
-   [Authorize (Policy = SD.Role_Admin)]
+    //[Authorize (Policy = SD.Role_Admin)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -35,7 +36,7 @@ namespace Robi_App.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IStoreService _storeService; 
+        private readonly IStoreService _storeService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -43,7 +44,7 @@ namespace Robi_App.Areas.Identity.Pages.Account
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender
-            , IStoreService storeService )
+            , IStoreService storeService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -51,7 +52,7 @@ namespace Robi_App.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _storeService = storeService;   
+            _storeService = storeService;
         }
 
         /// <summary>
@@ -86,19 +87,19 @@ namespace Robi_App.Areas.Identity.Pages.Account
 
             [Display(Name = "Full Name")]
             [Required(ErrorMessage = "ادخل الاسم بالكامل  ")]
-            public string FullName { get; set; }    
+            public string FullName { get; set; }
             [RegularExpression(@"^01[0-2,5]{1}[0-9]{8}$",
               ErrorMessage = "هذ الرقم غير صحيح  ")]
-            [Required (ErrorMessage = "ادخل رقم الهاتف")]
+            [Required(ErrorMessage = "ادخل رقم الهاتف")]
             public string PhoneNumber { get; set; }
-            [Required (ErrorMessage = "اختار نوع الحساب ")]
+            [ValidateNever]
             public string Role { get; set; }
-            
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required (ErrorMessage = "ادخل كلمة السر ")]
+            [Required(ErrorMessage = "ادخل كلمة السر ")]
             [StringLength(20, MinimumLength = 3,
     ErrorMessage = "{0} يجب أن يكون على الأقل {2} أحرف وبحد أقصى {1} أحرف.")]
             [DataType(DataType.Password)]
@@ -111,28 +112,32 @@ namespace Robi_App.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "كلمة المرور وتأكيدها غير متطابقين.")] 
+            [Compare("Password", ErrorMessage = "كلمة المرور وتأكيدها غير متطابقين.")]
             public string ConfirmPassword { get; set; }
-            public int StoreId { get; set; }    
+            public int StoreId { get; set; }
 
-            public IEnumerable <SelectListItem> Stores { get; set; }    
+            public IEnumerable<SelectListItem> Stores { get; set; }
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            Input = new InputModel()
+            if (User.HasClaim(C => C.Type == SD.Role_Admin))
             {
-                Stores = _storeService.GetStores(false)
-                .Select(st => new SelectListItem
+                Input = new InputModel()
                 {
-                    Text = st.Title,
-                    Value = st.Id.ToString()
-                }).ToList()
-            } ;
+                    Stores = _storeService.GetStores(false)
+                    .Select(st => new SelectListItem
+                    {
+                        Text = st.Title,
+                        Value = st.Id.ToString()
+                    }).ToList()
+                };
+
+            }
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -149,17 +154,34 @@ namespace Robi_App.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    user.FullName = Input.FullName; 
-                    var claims = new List<Claim>(){
-                       new Claim(Input.Role , Input.Role) ,
-                   };
-                    if (Input.StoreId != 0)
-                        claims.Add(new Claim(SD.ForStore, Input.StoreId.ToString()));
+                    user.FullName = Input.FullName;
+                    var claims = new List<Claim>(); 
+
+                    if (User.HasClaim(C => C.Type == SD.Role_Admin))
+                    {
+                        if (Input.Role == null)
+                        {
+                            ModelState.AddModelError("Role", "اختار نوع الحساب"); 
+                            return Page();
+                        }
+                        claims.Add(new Claim(Input.Role, Input.Role));                        
+
+                        if (Input.StoreId != 0)
+                            claims.Add(new Claim(SD.ForStore, Input.StoreId.ToString()));
+                    }
+                    else
+                    {
+                        /// this client register with herself 
+                        claims.Add(new Claim(SD.Role_Client, SD.Role_Client));
+                        user.LockoutEnd = DateTime.Now.AddYears(100);
+                        returnUrl = "/Home/RegisterSuccess";
+                    }
 
                     if (Input.Role != SD.Role_Admin)
                         user.TemporaryPassword = Input.Password;
+
                     await _userManager.UpdateAsync(user);
-                    await _userManager.AddClaimsAsync(user,claims);
+                    await _userManager.AddClaimsAsync(user, claims);
                     _logger.LogInformation("User created a new account with password.");
 
 
@@ -181,22 +203,25 @@ namespace Robi_App.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                      //  await _signInManager.SignInAsync(user, isPersistent: false);
+                        //  await _signInManager.SignInAsync(user, isPersistent: false);
+
                         return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
-                } 
+                }
             }
-
-            Input.Stores = _storeService.GetStores(false)
+            if (User.HasClaim(C => C.Type == SD.Role_Admin))
+            {
+                Input.Stores = _storeService.GetStores(false)
                 .Select(st => new SelectListItem
                 {
                     Text = st.Title,
                     Value = st.Id.ToString()
                 }).ToList();
+            }
             // If we got this far, something failed, redisplay form
             return Page();
         }

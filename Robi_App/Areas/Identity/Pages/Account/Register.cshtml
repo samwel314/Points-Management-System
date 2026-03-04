@@ -5,9 +5,12 @@
 }
 
 <div class="container my-4">
-    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary fw-bold">
-        <i class="bi bi-arrow-left fw-bold"></i> العودة للرئيسية
-    </a>
+    @if (User.HasClaim(C => C.Type == SD.Role_Admin))
+    {
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary fw-bold">
+            <i class="bi bi-arrow-left fw-bold"></i> العودة للرئيسية
+        </a>
+    }
     <div class="row justify-content-center">
         <div class="col-xl-7 col-lg-8 col-md-10">
 
@@ -49,29 +52,31 @@
                                 <span asp-validation-for="Input.PhoneNumber"
                                       class="text-danger small"></span>
                             </div>
+                            @if (User.HasClaim(C => C.Type == SD.Role_Admin))
+                                {
+                                <!-- Account Type -->
+                                <div class="col-md-6">
+                                    <label class="form-label">نوع الحساب</label>
+                                    <select id="roleSelect"
+                                            asp-for="Input.Role"
+                                            asp-items="@SD.Roles"
+                                            class="form-select">
+                                        <option selected disabled>اختر نوع الحساب</option>
+                                    </select>
+                                    <span class="text-danger small" asp-validation-for="Input.Role"></span>
+                                </div>
 
-                            <!-- Account Type -->
-                            <div class="col-md-6">
-                                <label class="form-label">نوع الحساب</label>
-                                <select id="roleSelect"
-                                        asp-for="Input.Role"
-                                        asp-items="@SD.Roles"
-                                        class="form-select">
-                                    <option selected disabled>اختر نوع الحساب</option>
-                                </select>
-                                <span class="text-danger small" asp-validation-for="Input.Role"></span>
-                            </div>
+                                <!-- Store (Employee only) -->
+                                <div class="col-md-6" id="employeeOptions" style="display:none;">
+                                    <label class="form-label">الفرع التابع له الموظف</label>
+                                    <select asp-for="Input.StoreId"
+                                            asp-items="@Model.Input.Stores"
+                                            class="form-select">
+                                        <option disabled selected>اختر الفرع</option>
+                                    </select>
+                                </div>
 
-                            <!-- Store (Employee only) -->
-                            <div class="col-md-6" id="employeeOptions" style="display:none;">
-                                <label class="form-label">الفرع التابع له الموظف</label>
-                                <select asp-for="Input.StoreId"
-                                        asp-items="@Model.Input.Stores"
-                                        class="form-select">
-                                    <option disabled selected>اختر الفرع</option>
-                                </select>
-                            </div>
-
+                                }
                             <!-- Password -->
                             <div class="col-md-6">
                                 <label asp-for="Input.Password" class="form-label">

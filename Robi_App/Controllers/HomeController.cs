@@ -11,13 +11,18 @@ namespace Robi_App.Controllers
             return View();
         }
 
+        public IActionResult RegisterSuccess()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
         }
-        public IActionResult Error (int statusCode)
+        public IActionResult Error(int statusCode)
         {
-            Response.StatusCode = statusCode;   
+            Response.StatusCode = statusCode;
             return View();
         }
     }
