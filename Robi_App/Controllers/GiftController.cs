@@ -78,5 +78,17 @@ namespace Robi_App.Controllers
                 statusCode = 404
             });
         }
+        public IActionResult UpdateName (int Id , string newName )
+        {
+            if (_giftService.UpdataName(Id , newName))
+                return RedirectToAction("Index");
+            TempData["Message"] = " \n ! هذا الهدية غير موجودة " +
+                "او ربما لديك هدية بنفس الاسم    ";
+            return RedirectToAction("Error", "Home", new
+            {
+                statusCode = 404
+            });
+
+        }
     }
 }

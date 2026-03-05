@@ -33,7 +33,7 @@
 
                         <h5 class="fw-bold">@gift.Name</h5>
 
-                        <div class="d-flex justify-content-center gap-2 mt-3">
+                        <div class="d-flex fw-bold justify-content-center gap-2 mt-3">
 
                             <!-- Update Name -->
                             <button class="btn btn-primary btn-sm"
@@ -103,7 +103,7 @@
 
                         </div>
 
-                        <form method="post">
+                        <form method="post" asp-action="UpdateName">
 
                             <div class="modal-body">
 
@@ -117,18 +117,12 @@
 
                                 <input type="text"
                                        class="form-control"
-                                       name="Name"
+                                       name="NewName"
                                        value="@gift.Name" />
 
                             </div>
 
                             <div class="modal-footer">
-
-                                <button class="btn btn-secondary"
-                                        data-bs-dismiss="modal">
-                                    الغاء
-                                </button>
-
                                 <button class="btn btn-primary">
                                     حفظ
                                 </button>

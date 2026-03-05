@@ -9,5 +9,7 @@ namespace Robi_App.Services
         bool DeleteGift(int id);    
         bool HaveGiftWithName(string name);
         Task<bool> UpdateImage(int id  , IFormFile image );
+
+        bool UpdataName(int id, string name);   
     }
 }

@@ -56,6 +56,21 @@ namespace Robi_App.Services.Implementation
             return _db.Gifts.Any(g => g.Name == name);
         }
 
+        public bool UpdataName(int id, string name)
+        {
+
+            var gift = _db.Gifts.FirstOrDefault(g => g.Id == id);
+            if (gift == null)
+                return false;
+            if (gift.Name != name && !HaveGiftWithName(name))
+            {
+                gift.Name = name;
+                _db.SaveChanges();
+                return true;
+            }
+            return false;   
+        }
+
         public async Task<bool> UpdateImage(int id, IFormFile image)
         {
             var gift = _db.Gifts.FirstOrDefault(g => g.Id == id);
