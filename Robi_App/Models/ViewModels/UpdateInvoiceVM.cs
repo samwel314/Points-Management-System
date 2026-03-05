@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Robi_App.Models.ViewModels
 {
-    public class CreateUpdateInvoiceVM
+    public class UpdateInvoiceVM
     {
         // invoice id
         public int Id { get; set; }
-        public int StoreId { get; set; }    
+        public int StoreId { get; set; }
         [Display(Name = "Invoice Number")]
         [Required(ErrorMessage = "ادخل كود الفاتورة ")]
         [MinLength(1)]
@@ -17,6 +17,7 @@ namespace Robi_App.Models.ViewModels
         [ValidateNever] // get it from current user 
         public string UserId { get; set; } = null!;
         [ValidateNever]
-        public IEnumerable< SelectListItem>  Stores  { get; set; } = null!;      
+        public IEnumerable<SelectListItem> Stores { get; set; } = null!;
+
     }
 }

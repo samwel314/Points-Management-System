@@ -8,7 +8,7 @@ namespace Robi_App.Services
 {
     public interface IInvoiceService
     {
-        void CreateInvoice(CreateUpdateInvoiceVM model); 
+        void CreateInvoice(CreateInvoiceVM model); 
         void Save();
         bool IsCodeExisting(string code);
         Invoice ? GetInvoiceToUpdate(int Id , bool tracked); 

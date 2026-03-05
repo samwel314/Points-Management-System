@@ -79,7 +79,7 @@ namespace Robi_App.Controllers
         [Authorize(policy: SD.Role_Client)]
         public IActionResult Create() 
         {
-            CreateUpdateInvoiceVM viewModel = new CreateUpdateInvoiceVM()
+            CreateInvoiceVM viewModel = new CreateInvoiceVM()
             {
                 Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
                 {
@@ -91,7 +91,7 @@ namespace Robi_App.Controllers
         }
         [Authorize(policy: SD.Role_Client)]
         [HttpPost]
-        public IActionResult Create (CreateUpdateInvoiceVM model)
+        public IActionResult Create (CreateInvoiceVM model)
         {
             char? storeChar = _storeService.GetStoreChar(model.StoreId); 
             if (storeChar == null)
@@ -142,7 +142,7 @@ namespace Robi_App.Controllers
             {
                 return new ForbidResult(); 
             }
-            CreateUpdateInvoiceVM viewModel = new CreateUpdateInvoiceVM()
+            UpdateInvoiceVM viewModel = new UpdateInvoiceVM()
             {
                 Id = Id,    
                 Code = invoiceFromDB.Code.Remove(0 , 2),  
@@ -158,7 +158,7 @@ namespace Robi_App.Controllers
         }
         [Authorize(policy: SD.Role_Client)]
         [HttpPost] 
-        public async Task<IActionResult> Update (CreateUpdateInvoiceVM model)
+        public async Task<IActionResult> Update (UpdateInvoiceVM model)
         {
             
             var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(model.Id , true);

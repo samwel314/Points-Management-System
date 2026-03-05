@@ -16,7 +16,7 @@ namespace Robi_App.Services.Implementation
             _db = db;
         }
 
-        public void CreateInvoice(CreateUpdateInvoiceVM model)
+        public void CreateInvoice(CreateInvoiceVM model)
         {
             var invoiceToDB = new Invoice()
             {
