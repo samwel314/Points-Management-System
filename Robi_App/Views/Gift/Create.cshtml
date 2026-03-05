@@ -1,0 +1,111 @@
+﻿@model CreateGiftVM
+@{
+ 
+    ViewData["Tittle"] = "إضافة هدية جديدة";    
+}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header text-center fw-bold">
+                    <i class="bi bi-gift me-1"></i>
+                    إضافة هدية جديدة
+                </div>
+
+                <div class="card-body">
+
+                    <form method="post"
+                          asp-action="Create"
+                          enctype="multipart/form-data">
+
+                        <!-- اسم الهدية -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                <i class="bi bi-tag me-1"></i>
+                                اسم الهدية
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-pencil"></i>
+                                </span>
+
+                                <input asp-for="Name"
+                                       class="form-control"
+                                       placeholder="أدخل اسم الهدية">
+
+                            </div>
+
+                            <span class="text-danger fw-bold"
+                                  asp-validation-for="Name">
+                            </span>
+
+                        </div>
+
+
+                        <!-- صورة الهدية -->
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                <i class="bi bi-image me-1"></i>
+                                صورة الهدية
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-upload"></i>
+                                </span>
+
+                                <input asp-for="Image"
+                                       class="form-control"
+                                       accept="image/*">
+
+                            </div>
+
+                            <span class="text-danger fw-bold"
+                                  asp-validation-for="Image">
+                            </span>
+
+                        </div>
+
+
+                        <!-- الأزرار -->
+                        <div class="d-grid gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-plus-circle me-1"></i>
+                                إضافة الهدية
+
+                            </button>
+
+                            <a asp-controller="Gift"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+
+                                <i class="bi bi-arrow-left"></i>
+                                رجوع
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

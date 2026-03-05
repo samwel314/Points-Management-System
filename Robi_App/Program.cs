@@ -39,6 +39,7 @@ builder.Services.AddScoped<IStoreService , StoreService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IDBInitializer, DBInitializer>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IGiftService, GiftService>();
 
 // Authorization polices builder.Services.AddAuthorization(options =>
 
