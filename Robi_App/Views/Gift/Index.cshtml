@@ -20,73 +20,65 @@
 
         @foreach (var gift in Model)
         {
-
-            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-
-                <div class="card h-100 shadow-sm border-0">
-
-                    <img src="~/GiftsImages/@gift.ImagePath"
-                         class="card-img-top"
-                         style="height:200px;object-fit:cover;">
-
-                    <div class="card-body text-center">
-
-                        <h5 class="fw-bold">@gift.Name</h5>
-                        <span class="badge bg-dark-subtle fs-6">
-                            ⭐     @gift.points    
-                        </span>                      
-                        <div class="d-flex fs-4 fw-bold justify-content-center gap-2 mt-3">
-
-                            <!-- Update Name -->
-                            <button class="btn btn-primary btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#updateName-@gift.Id">
-                                تعديل الاسم
-                            </button>
-
-                            <!-- Update Image -->
-                            <button class="btn btn-warning btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#updateImage-@gift.Id">
-                                تعديل الصورة
-                            </button>
-
-                            <!-- Delete -->
-                            <button class="btn btn-danger btn-sm"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#deleteConfirm-@gift.Id">
-                                حذف
-                            </button>
-
-                        </div>
-
-                        <!-- Confirm Delete -->
-                        <div class="collapse mt-3" id="deleteConfirm-@gift.Id">
-
-                            <form method="post" asp-action="Delete">
-
-                                <input type="hidden" name="Id" value="@gift.Id" />
-
-                                <p class="text-danger small">
-                                    سيتم حذف الهدية وجميع طلابتها !
-                                </p>
-
-                                <button class="btn btn-danger btn-sm w-100">
-                                    نعم احذف
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
+<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+    <div class="card h-100 shadow-sm border-0">
+        <img src="~/GiftsImages/@gift.ImagePath"
+             class="card-img-top"
+             style="height:200px;object-fit:cover;">
+        <div class="card-body text-center">
+            <h5 class="fw-bold">@gift.Name</h5>
+            <span class="badge bg-dark-subtle fs-6">
+                ⭐ @gift.points
+            </span>
+            <div class="row g-2 mt-3">
+                <!-- Update Name -->
+                <div class="col-6">
+                    <button class="btn btn-primary w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updateName-@gift.Id">
+                        📝 تعديل الاسم
+                    </button>
                 </div>
-
+                <!-- Update Points -->
+                <div class="col-6">
+                    <button class="btn btn-secondary w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updatePoints-@gift.Id">
+                        ⭐ تعديل النقط
+                    </button>
+                </div>
+                <!-- Update Image -->
+                <div class="col-12">
+                    <button class="btn btn-warning w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updateImage-@gift.Id">
+                        🖼️ تعديل الصورة
+                    </button>
+                </div>
+                <!-- Delete -->
+                <div class="text-center">
+                    <button class="btn btn-danger w-100"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#deleteConfirm-@gift.Id">
+                        🗑️ حذف
+                    </button>
+                </div>
             </div>
-
-
-            <!-- Update Name Modal -->
+            <!-- Confirm Delete -->
+            <div class="collapse mt-3" id="deleteConfirm-@gift.Id">
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" name="Id" value="@gift.Id" />
+                    <p class="text-danger small">
+                        ⚠️ سيتم حذف الهدية وجميع طلباتها!
+                    </p>
+                    <button class="btn btn-danger w-100">
+                        نعم، احذف نهائياً
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>         <!-- Update Name Modal -->
 
             <div class="modal fade" id="updateName-@gift.Id">
 
@@ -121,6 +113,55 @@
                                        class="form-control"
                                        name="NewName"
                                        value="@gift.Name" />
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary">
+                                    حفظ
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal fade" id="updatePoints-@gift.Id">
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">
+                                تعديل  النفاط المستحقة
+                            </h5>
+
+                            <button class="btn-close"
+                                    data-bs-dismiss="modal"></button>
+
+                        </div>
+
+                        <form method="post" asp-action="UpdatePoints">
+
+                            <div class="modal-body">
+
+                                <input type="hidden"
+                                       name="Id"
+                                       value="@gift.Id" />
+
+                                <label class="form-label">
+عدد النقط                                 </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       name="points"
+                                       value="@gift.points" />
 
                             </div>
 

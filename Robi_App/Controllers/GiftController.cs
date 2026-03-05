@@ -90,5 +90,19 @@ namespace Robi_App.Controllers
             });
 
         }
+
+        public IActionResult UpdatePoints(int Id, int points)
+        {
+            if (_giftService.UpdataPoints(Id, points))
+                return RedirectToAction("Index");
+            TempData["Message"] = " \n ! هذا الهدية غير موجودة " +
+                "او ربما لديك هدية بنفس الاسم    ";
+            return RedirectToAction("Error", "Home", new
+            {
+                statusCode = 404
+            });
+
+        }
+
     }
 }
