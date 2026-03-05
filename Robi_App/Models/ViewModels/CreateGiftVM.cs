@@ -13,5 +13,10 @@ namespace Robi_App.Models.ViewModels
         public IFormFile Image { get; set; } = null!;
         [ValidateNever]
         public string ImagePath { get; set; } = null!;
+        [Display (Name = "النقط المستحقة ")]
+        [Required (ErrorMessage = "ادخل عدد النقط المستحقة ")]
+        [Range(minimum: 0 , maximum: int.MaxValue , ErrorMessage = "لا يمكن ادخال رقم اقل من صفر ")]
+        public int Points { get; set; }
+
     }
 }

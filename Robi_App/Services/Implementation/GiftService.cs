@@ -22,6 +22,7 @@ namespace Robi_App.Services.Implementation
             {
                 Name = gift.Name,   
                 ImagePath = gift.ImagePath, 
+                Points = gift.Points,   
             }); 
             _db.SaveChanges();  
         }
@@ -48,6 +49,7 @@ namespace Robi_App.Services.Implementation
                 Id = g.Id,  
                 Name = g.Name,
                 ImagePath = g.ImagePath,
+                points = g.Points,  
             }).ToList(); 
         }
 
@@ -68,7 +70,7 @@ namespace Robi_App.Services.Implementation
                 _db.SaveChanges();
                 return true;
             }
-            return false;   
+            return true;   
         }
 
         public async Task<bool> UpdateImage(int id, IFormFile image)
