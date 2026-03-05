@@ -127,6 +127,7 @@ namespace Robi_App.Controllers
             await model.Image.CopyToAsync (stream);   
             // ***
             model.UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value; 
+            model.ImagePath = fileName; 
             _invoiceService.CreateInvoice(model);
             // will change it soon to UserInvoices
             return RedirectToAction("index" , "Customer"); 

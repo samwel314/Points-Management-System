@@ -22,5 +22,6 @@ namespace Robi_App.Models.ViewModels
         [Display(Name = "صورة الفاتورة")]
         [Required (ErrorMessage = "ارفق صورة الفاتورة ")]
         public IFormFile Image { get; set; } = null!;
+        public string  ? ImagePath { get; set; }    
     }
 }

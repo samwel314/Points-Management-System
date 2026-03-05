@@ -24,6 +24,8 @@ namespace Robi_App.Models
         [ForeignKey("UserId")]
         public IdentityUser User { get; set; } = null!; 
 
+        public string ImagePath { get; set; } = null!;      
+
     }
 
 }
