@@ -18,12 +18,13 @@ namespace Robi_App.Controllers
         private readonly IStoreService _storeService; 
         private readonly IInvoiceService _invoiceService;
         private readonly IAuthorizationService _authorizationService;
-
-        public InvoiceController(IStoreService storeService, IInvoiceService invoiceService, IAuthorizationService authorizationService)
+        private readonly IWebHostEnvironment _environment; 
+        public InvoiceController(IStoreService storeService, IInvoiceService invoiceService, IAuthorizationService authorizationService , IWebHostEnvironment environment)
         {
             _storeService = storeService;
             _invoiceService = invoiceService;
             _authorizationService = authorizationService;
+            _environment = environment;
         }
         // admin
         [Authorize(policy: "AdminOrEmployee")]
@@ -91,7 +92,7 @@ namespace Robi_App.Controllers
         }
         [Authorize(policy: SD.Role_Client)]
         [HttpPost]
-        public IActionResult Create (CreateInvoiceVM model)
+        public async Task<IActionResult> Create (CreateInvoiceVM model)
         {
             char? storeChar = _storeService.GetStoreChar(model.StoreId); 
             if (storeChar == null)
@@ -115,7 +116,16 @@ namespace Robi_App.Controllers
                     ModelState.AddModelError("Code", "   كود الفاتورة غير صالح    ");
                 return View(model);
             }
-
+            var path = Path.Combine(_environment.WebRootPath , "InvoicesImages");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Image.FileName);
+            var filePath = Path.Combine(path, fileName);
+            using var stream = new FileStream(filePath , FileMode.Create); 
+            await model.Image.CopyToAsync (stream);   
+            // ***
             model.UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value; 
             _invoiceService.CreateInvoice(model);
             // will change it soon to UserInvoices
