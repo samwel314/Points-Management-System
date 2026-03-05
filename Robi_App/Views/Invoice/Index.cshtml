@@ -66,21 +66,35 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="modal fade" id="@(idCount)editPointsModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
 
                             <div class="modal-header text-center">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-
-                                <h5 class="modal-title fw-bold ">
-                                    <i class="bi bi-pencil-square  me-2"></i> تعديل نقاط الفاتورة
+                                <h5 class="modal-title fw-bold">
+                                    <i class="bi bi-pencil-square me-2"></i> تعديل نقاط الفاتورة
                                 </h5>
                             </div>
 
                             <div class="modal-body">
-                                <form method="post" asp-action="UpdatePoints" asp-route-url="@(Context.Request.Path + Context.Request.QueryString )" id="@info.Id">
+
+                                <!-- صورة الفاتورة للعرض فقط -->
+                                @if (!string.IsNullOrEmpty(info.ImagePath))
+                                {
+                                    <div class="text-center mb-3">
+                                        <img src="~/InvoicesImages/@info.ImagePath"
+                                             class="img-fluid rounded shadow-sm"
+                                             style="max-height:250px; object-fit:cover;" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted text-center mb-3">لا توجد صورة مرفوعة</p>
+                                }
+
+                                <!-- الفورم لتعديل النقاط -->
+                                <form method="post" asp-action="UpdatePoints" asp-route-url="@(Context.Request.Path + Context.Request.QueryString)" id="@info.Id">
                                     <input name="Id" value="@info.Id" hidden />
 
                                     <div class="mb-3">
@@ -109,6 +123,7 @@
                                         </button>
                                     </div>
                                 </form>
+
                             </div>
 
                         </div>
