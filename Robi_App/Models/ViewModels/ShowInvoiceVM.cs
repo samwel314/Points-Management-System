@@ -13,6 +13,6 @@ namespace Robi_App.Models.ViewModels
         public string Date {  get; set; } = null!;
         public string UserName { get; set; } = null!;
         public string Phone { get; set; } = null!; 
-
+        public string ImagePath { get; set; } = null!;  
     }
 }

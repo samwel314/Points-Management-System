@@ -23,6 +23,7 @@ namespace Robi_App.Services.Implementation
                 Code = model.Code,
                 UserId = model.UserId,  
                 StoreId = model.StoreId,    
+                ImagePath = model.ImagePath!
             }; 
             _db.Invoices.Add(invoiceToDB);      
             _db.SaveChanges();      
@@ -47,6 +48,7 @@ namespace Robi_App.Services.Implementation
                     code = i.Code,
                     storeName = i.Store.Title,
                     Date = i.CreatedAt.ToString("dd/MM/yyyy" ) , 
+                    ImagePath = i.ImagePath
                 }).ToList(),
                 TotalPoints = _db.Invoices.Where(i => i.UserId == Id).Sum(i => i.Points)
             };
@@ -95,6 +97,7 @@ namespace Robi_App.Services.Implementation
             return query.Select (x => new ShowInvoiceVM { 
             Id = x.Id,  
             code=x.Code,    
+            ImagePath = x.ImagePath,    
             storeName =x.Store.Title,   
             UserName = _db.ApplicationUsers.First(u => u.Id == x.UserId)!.FullName,
             Phone = x.User.UserName!,
