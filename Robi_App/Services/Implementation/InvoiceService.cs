@@ -55,6 +55,12 @@ namespace Robi_App.Services.Implementation
             return data;
         }
 
+        public string ? GetImagePath(int id)
+        {
+            var invoice = _db.Invoices.FirstOrDefault(i => i.Id == id); 
+            return invoice is not null ? invoice.ImagePath : null;
+        }
+
         public Invoice ? GetInvoiceToUpdate(int Id ,  bool tracked)
         {
             var query = _db.Invoices.AsQueryable(); 
@@ -104,6 +110,16 @@ namespace Robi_App.Services.Implementation
             Points = x.Points,
             Date = x.CreatedAt.ToString("dd/MM/yyyy")
             } ).ToList();
+        }
+
+        public bool UpdateImage(int id, string imagePath)
+        {
+            var invoice = _db.Invoices.FirstOrDefault(i => i.Id == id);
+            if (invoice == null)
+                return false;
+            invoice.ImagePath = imagePath;  
+            _db.SaveChanges();  
+            return true;
         }
     }
 }

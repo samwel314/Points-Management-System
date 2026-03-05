@@ -8,6 +8,8 @@ namespace Robi_App.Services
 {
     public interface IInvoiceService
     {
+        public string ?GetImagePath (int id);
+        public bool UpdateImage (int id, string imagePath); 
         void CreateInvoice(CreateInvoiceVM model); 
         void Save();
         bool IsCodeExisting(string code);
@@ -16,7 +18,7 @@ namespace Robi_App.Services
         public CustomerProfileVM GetCustomerProfile(string Id);
 
         public IEnumerable<ShowInvoiceVM> showInvoices(ClaimsPrincipal user , Expression<Func<Invoice , bool > > filter = null!);
-
+        
         public Task RestYear(); 
     }
 }

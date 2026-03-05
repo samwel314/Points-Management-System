@@ -246,6 +246,34 @@ namespace Robi_App.Controllers
             await _invoiceService.RestYear();
             return RedirectToAction("Index", "Home"); 
         }
-
+        [Authorize(policy: SD.Role_Client)]
+        [HttpPost]
+        public async Task<IActionResult> UpdateImage (int Id , IFormFile NewImage , string url)
+        {
+            var oldPath = _invoiceService.GetImagePath(Id);
+            if (oldPath == null)
+            {
+                TempData["Message"] = "هذا الفاتورة غير موجودة  ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+            var path = Path.Combine(_environment.WebRootPath, "InvoicesImages" , oldPath);
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            path = Path.Combine(_environment.WebRootPath, "InvoicesImages");
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(NewImage.FileName);
+            var filePath = Path.Combine(path, fileName);
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await NewImage.CopyToAsync(stream);
+           _invoiceService.UpdateImage(Id , fileName);
+            // ***
+            if (url is not null )
+                return Redirect(url);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
