@@ -64,5 +64,19 @@ namespace Robi_App.Controllers
             });
         }
 
+        public async Task<IActionResult> UpdateImage (int Id , IFormFile Image )
+        {
+            if (Image == null)
+                return RedirectToAction("Index");
+            var isUpdated = await _giftService.UpdateImage(Id, Image); 
+            if (isUpdated)
+                return RedirectToAction("Index");
+
+            TempData["Message"] = "! هذا الهدية غير موجودة   ";
+            return RedirectToAction("Error", "Home", new
+            {
+                statusCode = 404
+            });
+        }
     }
 }

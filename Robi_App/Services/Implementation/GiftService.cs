@@ -55,5 +55,28 @@ namespace Robi_App.Services.Implementation
         {
             return _db.Gifts.Any(g => g.Name == name);
         }
+
+        public async Task<bool> UpdateImage(int id, IFormFile image)
+        {
+            var gift = _db.Gifts.FirstOrDefault(g => g.Id == id);
+            if (gift == null)
+                return false;
+            // remove old image 
+            var path = Path.Combine(_environment.WebRootPath, "GiftsImages", gift.ImagePath);
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            // add new image
+            path = Path.Combine(_environment.WebRootPath, "GiftsImages");
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            var filePath = Path.Combine(path, fileName);
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await  image.CopyToAsync(stream);
+            gift.ImagePath = fileName;  
+            await   _db.SaveChangesAsync();
+            return true;
+        }
     }
 }
