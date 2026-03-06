@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Robi_App.Models.ViewModels;
 using Robi_App.Services;
+using System.Security.Claims;
 
 namespace Robi_App.Controllers
 {
@@ -9,12 +10,15 @@ namespace Robi_App.Controllers
     {
         private readonly IGiftService _giftService;
         private readonly IWebHostEnvironment _environment;
+        private readonly IStoreService _storeService;
 
-        public GiftController(IGiftService giftService, IWebHostEnvironment environment)
+        public GiftController(IGiftService giftService, IWebHostEnvironment environment, IStoreService storeService)
         {
             _giftService = giftService;
             _environment = environment;
+            _storeService = storeService;
         }
+
         [Authorize(policy: SD.Role_Admin)]
 
         public IActionResult Index()
@@ -116,7 +120,29 @@ namespace Robi_App.Controllers
 
         }
 
+        [Authorize(policy: SD.Role_Client)]
 
-
+        public IActionResult Display ()
+        {
+            var gifts = _giftService.GetAll();
+            ViewBag.Brancehs = _storeService.GetStores(false); 
+            return View(gifts);
+        }
+        [HttpPost]
+        [Authorize(policy: SD.Role_Client)]
+        public IActionResult RequestGift (RequestGiftViewModel model)
+        {
+            if (model.BranchId == 0 )
+            {
+                TempData["Message"] = "  عند طلبك لهدية الرجاء اختيار الفرع الذي تريد استلام الهدية منه";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 400
+                });
+            }
+            var userIid = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+          
+            return View(model); 
+        }
     }
 }

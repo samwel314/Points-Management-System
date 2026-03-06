@@ -1,0 +1,116 @@
+﻿<div class="container py-5">
+    <div class="row g-4">
+        @foreach (var gift in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-hover h-100 overflow-hidden">
+                    <!-- Gift Image -->
+                    <div class="position-relative">
+                        <img src="~/GiftsImages/@gift.ImagePath"
+                             class="card-img-top"
+                             style="height: 280px; object-fit: cover;"
+                             alt="@gift.Name">
+                        <!-- Points Badge -->
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge bg-warning text-dark fs-5 px-3 py-2 rounded-pill shadow">
+                                <i class="bi bi-star-fill"></i> @gift.points نقطة
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Gift Details -->
+                    <div class="card-body text-center p-4">
+                        <h4 class="fw-bold mb-3">@gift.Name</h4>
+                        <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#requestModal-@gift.Id">
+                            <i class="bi bi-gift-fill me-2"></i>
+                            اطلب الهدية
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Request Modal -->
+            <div class="modal fade fw-bold "  id="requestModal-@gift.Id" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">
+                                <i class="bi bi-gift me-2"></i>
+                                طلب هدية: @gift.Name
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form method="post" asp-action="RequestGift">
+                            <div class="modal-body p-4">
+                                <input type="hidden" name="GiftId" value="@gift.Id" />
+
+                                <!-- Gift Summary -->
+                                <div class="text-center mb-4">
+                                    <img src="~/GiftsImages/@gift.ImagePath"
+                                         class="rounded shadow-sm mb-3"
+                                         style="width: 150px; height: 150px; object-fit: cover;"
+                                         alt="@gift.Name">
+                                    <h6 class="text-muted">النقاط المطلوبة</h6>
+                                    <h3 class="text-warning fw-bold">
+                                        <i class="bi bi-star-fill"></i> @gift.points
+                                    </h3>
+                                </div>
+
+                                <!-- Branch Selection -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                        اختر الفرع للاستلام
+                                    </label>
+                                    <select class="form-select form-select-lg shadow-sm" name="BranchId" required oninvalid="this.setCustomValidity('من فضلك اختر الفرع')" oninput="this.setCustomValidity('')">
+                                        <option value="">-- اختر الفرع --</option>
+                                      @foreach (var branch in ViewBag.Brancehs)
+                                        {
+                                            <option  value="@branch.Id">@branch.Title</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+
+                                <!-- Optional Note -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-chat-left-text me-1"></i>
+                                        ملاحظات (اختياري)
+                                    </label>
+                                    <textarea class="form-control shadow-sm"
+                                          name="Notes"
+                                          rows="3"
+                                          placeholder="أي ملاحظات إضافية..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    إلغاء
+                                </button>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-send-fill me-2"></i>
+                                    تأكيد الطلب
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .shadow-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .shadow-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+        }
+</style>
