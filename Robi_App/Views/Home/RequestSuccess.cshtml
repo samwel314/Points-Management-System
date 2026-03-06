@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "تم تقديم الطلب";
+}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-md-6 text-center">
+            <div class="card border-0 shadow-lg p-5">
+                <!-- Success Icon -->
+                <div class="mb-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                </div>
+
+                <!-- Success Message -->
+                <h2 class="fw-bold text-success mb-3">تم تقديم الطلب بنجاح!</h2>
+                <p class="text-muted fs-5 mb-4">
+                    سيتم مراجعة طلبك وإشعارك بالحالة قريباً
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-3">
+                    <a asp-action="MyRequests" class="btn btn-primary btn-lg">
+                        <i class="bi bi-list-check me-2"></i>
+                        عرض طلباتي
+                    </a>
+                    <a asp-controller="Gift" asp-action="Display" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-right me-2"></i>
+                        العودة للهدايا
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

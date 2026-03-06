@@ -2,6 +2,7 @@
 using Robi_App.Data;
 using Robi_App.Models;
 using Robi_App.Models.ViewModels;
+using System.Net.WebSockets;
 
 namespace Robi_App.Services.Implementation
 {
@@ -14,6 +15,23 @@ namespace Robi_App.Services.Implementation
         {
             _db = db;
             _environment = environment;
+        }
+
+        public async Task<bool> AddGiftRequest(RequestGiftViewModel model)
+        {
+            if (!await _db.Stores.AnyAsync(s => s.Id == model.BranchId) ||
+                       !await _db.Gifts.AnyAsync(g => g.Id == model.GiftId))
+                return false;
+
+            _db.GiftRequests.Add(new GiftRequest
+            {
+                GiftId = model.GiftId,
+                StoreId = model.BranchId,
+                Notes = model.Notes,
+                UserId = model.UserId,
+            });
+            await _db.SaveChangesAsync();
+            return true;
         }
 
         public void CreateGift(CreateGiftVM gift)
@@ -56,6 +74,11 @@ namespace Robi_App.Services.Implementation
         public bool HaveGiftWithName(string name)
         {
             return _db.Gifts.Any(g => g.Name == name);
+        }
+
+        public Task<bool> IsReqestedBefore(int giftId, string userId)
+        {
+            return _db.GiftRequests.AnyAsync(gr => gr.GiftId == giftId && gr.UserId == userId); 
         }
 
         public bool UpdataName(int id, string name)

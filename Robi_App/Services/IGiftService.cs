@@ -13,6 +13,7 @@ namespace Robi_App.Services
         bool UpdataName(int id, string name);
         bool UpdataPoints(int id, int points);
 
-        
+        Task<bool> AddGiftRequest(RequestGiftViewModel model); 
+        Task<bool> IsReqestedBefore(int giftId, string userId); 
     }
 }

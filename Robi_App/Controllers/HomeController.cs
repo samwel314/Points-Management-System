@@ -15,7 +15,10 @@ namespace Robi_App.Controllers
         {
             return View();
         }
-
+        public IActionResult RequestSuccess()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

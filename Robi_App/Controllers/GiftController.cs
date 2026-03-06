@@ -130,7 +130,7 @@ namespace Robi_App.Controllers
         }
         [HttpPost]
         [Authorize(policy: SD.Role_Client)]
-        public IActionResult RequestGift (RequestGiftViewModel model)
+        public async Task<IActionResult> RequestGift (RequestGiftViewModel model)
         {
             if (model.BranchId == 0 )
             {
@@ -140,9 +140,29 @@ namespace Robi_App.Controllers
                     statusCode = 400
                 });
             }
+
             var userIid = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
-             
-            return View(model); 
+            model.UserId = userIid;
+            if (await _giftService.IsReqestedBefore(model.GiftId , model.UserId))
+            {
+                TempData["Message"] = "  لقد قمت بطلب هذه الهدية من قبل الرجاء اختيار هدية أخرى ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 400
+                });
+
+            }
+            var isDone = await _giftService.AddGiftRequest(model); 
+            if (!isDone)
+            {
+                TempData["Message"] = " ! بيانات الطلب غير صحيحة ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 400
+                });
+            }
+            return RedirectToAction("RequestSuccess", "Home"); 
+ ;
         }
     }
 }
