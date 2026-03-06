@@ -15,6 +15,7 @@ namespace Robi_App.Data
         public DbSet<Store> Stores { get; set; }
         public DbSet<Gift> Gifts { get; set; }      
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }  
+        public DbSet <GiftRequest> GiftRequests { get; set; }   
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // this is for identity tables
