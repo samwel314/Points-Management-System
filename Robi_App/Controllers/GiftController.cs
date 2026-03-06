@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Robi_App.Models.ViewModels;
 using Robi_App.Services;
 
@@ -14,17 +15,21 @@ namespace Robi_App.Controllers
             _giftService = giftService;
             _environment = environment;
         }
+        [Authorize(policy: SD.Role_Admin)]
 
         public IActionResult Index()
         {
             var gifts = _giftService.GetAll();      
             return View(gifts);
         }
+        [Authorize(policy: SD.Role_Admin)]
 
         public IActionResult Create()
         {
             return View();
         }
+        [Authorize(policy: SD.Role_Admin)]
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateGiftVM model)
         {
@@ -53,6 +58,8 @@ namespace Robi_App.Controllers
         }
 
         [HttpPost]
+        [Authorize(policy: SD.Role_Admin)]
+
         public IActionResult Delete (int Id)
         {
             if (_giftService.DeleteGift(Id))
@@ -63,6 +70,7 @@ namespace Robi_App.Controllers
                 statusCode = 404
             });
         }
+        [Authorize(policy: SD.Role_Admin)]
 
         public async Task<IActionResult> UpdateImage (int Id , IFormFile Image )
         {
@@ -78,6 +86,9 @@ namespace Robi_App.Controllers
                 statusCode = 404
             });
         }
+
+        [Authorize(policy: SD.Role_Admin)]
+
         public IActionResult UpdateName (int Id , string newName )
         {
             if (_giftService.UpdataName(Id , newName))
@@ -90,6 +101,7 @@ namespace Robi_App.Controllers
             });
 
         }
+        [Authorize(policy: SD.Role_Admin)]
 
         public IActionResult UpdatePoints(int Id, int points)
         {
@@ -103,6 +115,8 @@ namespace Robi_App.Controllers
             });
 
         }
+
+
 
     }
 }
