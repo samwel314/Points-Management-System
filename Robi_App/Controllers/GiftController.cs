@@ -164,5 +164,30 @@ namespace Robi_App.Controllers
             return RedirectToAction("RequestSuccess", "Home"); 
  ;
         }
+        [Authorize(policy: SD.Role_Client)]
+
+        public async Task<IActionResult> ClientRequstedGifts ()
+        {
+            var userIid = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+            var giftsRequests = await _giftService.ClientRequstedGifts(userIid);    
+            return View(giftsRequests); 
+        }
+        [HttpPost]
+        [Authorize(policy: SD.Role_Client)]
+
+        public async Task <IActionResult> DeleteGiftRequest (int id)
+        {
+            var userIid = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+            var isDeleted = await _giftService.DeleteGiftRequest(id, userIid); 
+            if (!isDeleted)
+            {
+                TempData["Message"] = " ! هذا الطلب غير موجود  ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+            return RedirectToAction("ClientRequstedGifts");
+        }
     }
 }

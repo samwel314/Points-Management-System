@@ -14,12 +14,12 @@
                 <!-- Success Message -->
                 <h2 class="fw-bold text-success mb-3">تم تقديم الطلب بنجاح!</h2>
                 <p class="text-muted fs-5 mb-4">
-                    سيتم مراجعة طلبك وإشعارك بالحالة قريباً
+                    سيتم مراجعة طلبك قريباً
                 </p>
 
                 <!-- Action Buttons -->
                 <div class="d-grid gap-3">
-                    <a asp-action="MyRequests" class="btn btn-primary btn-lg">
+                    <a asp-controller="Gift" asp-action="ClientRequstedGifts" class="btn btn-primary btn-lg">
                         <i class="bi bi-list-check me-2"></i>
                         عرض طلباتي
                     </a>

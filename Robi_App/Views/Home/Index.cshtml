@@ -183,8 +183,7 @@
             <i class="bi bi-person"></i> لوحة تحكم العميل
         </h4>
 
-        <div class="row g-3  justify-content-center">
-
+        <div class="row g-3 justify-content-center">
             <div class="col-6 col-md-4">
                 <a asp-controller="Invoice" asp-action="create" class="dash-card">
                     <div class="card text-center h-100">
@@ -196,7 +195,6 @@
                     </div>
                 </a>
             </div>
-
             <div class="col-6 col-md-4">
                 <a asp-controller="customer" asp-action="index" class="dash-card">
                     <div class="card text-center h-100">
@@ -208,7 +206,28 @@
                     </div>
                 </a>
             </div>
-
+            <div class="col-6 col-md-4">
+                <a asp-controller="Gift" asp-action="Display" class="dash-card">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-gift-fill fs-3 text-success"></i>
+                            <h6 class="fw-bold mt-2">الهدايا المتاحة</h6>
+                            <p>استبدال النقاط بالهدايا</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4">
+                <a asp-controller="Gift" asp-action="ClientRequstedGifts" class="dash-card">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-list-check fs-3 text-warning"></i>
+                            <h6 class="fw-bold mt-2">طلبات الهدايا</h6>
+                            <p>عرض جميع طلباتك</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     }
     else 

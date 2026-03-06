@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using Robi_App.Data;
 using Robi_App.Models;
 using Robi_App.Models.ViewModels;
@@ -34,6 +35,20 @@ namespace Robi_App.Services.Implementation
             return true;
         }
 
+        public async Task<IEnumerable<ClientRequestsVM>> ClientRequstedGifts(string userId)
+        {
+            return await _db.GiftRequests.Where(gr => gr.UserId == userId).
+                Select(gr =>  new ClientRequestsVM
+                {
+                    Id = gr.Id, 
+                    GiftName = gr.Gift.Name,    
+                    Points  = gr.Gift.Points,   
+                    StoreName = gr.Store.Title,  
+                    CreatedAt = gr.CreatedAt,       
+                    IsApproved = gr.IsApproved,     
+                }) .ToListAsync();   
+        }
+
         public void CreateGift(CreateGiftVM gift)
         {
             _db.Add(new Gift
@@ -57,6 +72,16 @@ namespace Robi_App.Services.Implementation
             }
             _db.Gifts.Remove(gift);
             _db.SaveChanges();
+            return true;
+        }
+
+        public async Task<bool> DeleteGiftRequest(int id, string userIid)
+        {
+            var giftRequest = await _db.GiftRequests.FirstOrDefaultAsync(gr => gr.Id == id && gr.UserId == userIid);
+            if (giftRequest == null)
+                return false;
+            _db.GiftRequests.Remove(giftRequest);
+           await _db.SaveChangesAsync(); 
             return true;
         }
 

@@ -14,6 +14,8 @@ namespace Robi_App.Services
         bool UpdataPoints(int id, int points);
 
         Task<bool> AddGiftRequest(RequestGiftViewModel model); 
-        Task<bool> IsReqestedBefore(int giftId, string userId); 
+        Task<bool> IsReqestedBefore(int giftId, string userId);
+        Task<IEnumerable<ClientRequestsVM>> ClientRequstedGifts(string userId);
+        Task<bool> DeleteGiftRequest(int id, string userIid);
     }
 }
