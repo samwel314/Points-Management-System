@@ -78,6 +78,7 @@ namespace Robi_App.Services.Implementation
         public  async Task RestYear()
         {
             _db.Invoices.RemoveRange(_db.Invoices);
+            _db.GiftRequests.RemoveRange(_db.GiftRequests); 
           await  _db.SaveChangesAsync();  
         }
 

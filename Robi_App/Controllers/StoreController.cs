@@ -8,7 +8,6 @@ using System.Collections.Immutable;
 
 namespace Robi_App.Controllers
 {
-    [Authorize (policy: SD.Role_Admin)]
     public class StoreController : Controller
     {
         private readonly IStoreService _service;
@@ -21,17 +20,21 @@ namespace Robi_App.Controllers
             _invoiceService = invoiceService;
             _giftService = giftService;
         }
+        [Authorize(policy: SD.Role_Admin)]
 
         public IActionResult Index()
         {
             var Stores = _service.GetStores(false);
             return View(Stores);
         }
+        [Authorize(policy: SD.Role_Admin)]
 
         public IActionResult Add()
         {
             return View();
-        }   
+        }
+        [Authorize(policy: SD.Role_Admin)]
+
         [HttpPost]
         public IActionResult Add (Store store )
         {
@@ -49,6 +52,8 @@ namespace Robi_App.Controllers
             _service.AddStore(store);   
             return RedirectToAction("Index");
         }
+        [Authorize(policy: SD.Role_Admin)]
+
 
         public IActionResult Update (int id )
         {
@@ -64,6 +69,8 @@ namespace Robi_App.Controllers
 
             return View(store); 
         }
+        [Authorize(policy: SD.Role_Admin)]
+
         [HttpPost]
         public IActionResult Update (Store store )
         {
@@ -81,6 +88,8 @@ namespace Robi_App.Controllers
             _service.UpdateStore(store);    
             return RedirectToAction("Index");   
         }
+        [Authorize(policy: SD.Role_Admin)]
+
 
         public IActionResult Delete (int id)
         {
@@ -95,6 +104,8 @@ namespace Robi_App.Controllers
             }
             return View(store); 
         }
+        [Authorize(policy: SD.Role_Admin)]
+
 
         [HttpPost]
         public IActionResult Delete(Store store)
@@ -112,6 +123,8 @@ namespace Robi_App.Controllers
             _service.DeleteStore(store);
             return RedirectToAction("Index");
         }
+        [Authorize(policy: SD.Role_Admin)]
+
 
         public IActionResult ShowInvoices (int Id)
         {
@@ -125,10 +138,17 @@ namespace Robi_App.Controllers
             store.Invoices = _invoiceService.showInvoices (null!,  i => i.StoreId == Id);
             return View(store);  
         }
+        [Authorize(policy: "AdminOrEmployee")]
 
         public async Task<IActionResult> Gifts (int Id)
         {
-             var store = await _service.ShowStoreGifts (Id);
+            if (User.HasClaim(c=> c.Type == SD.Role_Employee))
+            {
+                var storeId = int.Parse(User.FindFirst(c => c.Type == SD.ForStore)!.Value);
+                if (storeId != Id)
+                    return Forbid(); 
+            }
+            var store = await _service.ShowStoreGifts (Id);
             if (store is null)
             {
                 TempData["Message"] = "هذا الفرع غير موجود ";
@@ -136,6 +156,8 @@ namespace Robi_App.Controllers
             }
             return View(store);
         }
+        [Authorize(policy: "AdminOrEmployee")]
+
         [HttpPost]
         public async Task<IActionResult> ToggleAvailability (int id , string Url )
         {
@@ -150,6 +172,7 @@ namespace Robi_App.Controllers
 
             return Redirect(Url); 
         }
+        [Authorize(policy: "AdminOrEmployee")]
 
         public async Task<IActionResult> DeleteGiftRequest (int Id  , string Url )
         {
