@@ -250,7 +250,8 @@ namespace Robi_App.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateImage (int Id , IFormFile NewImage , string url)
         {
-            var oldPath = _invoiceService.GetImagePath(Id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var oldPath = _invoiceService.GetImagePath(Id , userId);
             if (oldPath == null)
             {
                 TempData["Message"] = "هذا الفاتورة غير موجودة  ";

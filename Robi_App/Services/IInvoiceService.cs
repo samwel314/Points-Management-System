@@ -8,7 +8,7 @@ namespace Robi_App.Services
 {
     public interface IInvoiceService
     {
-        public string ?GetImagePath (int id);
+        public string ?GetImagePath (int id , string  userId);
         public bool UpdateImage (int id, string imagePath); 
         void CreateInvoice(CreateInvoiceVM model); 
         void Save();
