@@ -93,6 +93,20 @@
                         </div>
 
                         <div class="modal-body">
+                            @if (!string.IsNullOrEmpty(i.ImagePath))
+                            {
+                                <div class="text-center mb-3">
+                                    <img src="~/InvoicesImages/@i.ImagePath"
+                                         class="img-fluid rounded shadow-sm"
+                                         style="max-height:250px; object-fit:cover;" />
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted text-center mb-3">لا توجد صورة مرفوعة</p>
+                            }
+
+
                             <form method="post" asp-controller="Invoice" asp-action="UpdatePoints" asp-route-url="@(Context.Request.Path + Context.Request.QueryString )" id="@i.Id">
                                 <input name="Id" value="@i.Id" hidden />
 
