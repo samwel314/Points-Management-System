@@ -1,5 +1,4 @@
 ﻿@model List<Store>
-
 <div class="container mt-4">
     <!-- زر العودة -->
     <div class="mb-3 text-start">
@@ -11,12 +10,11 @@
     <!-- العنوان وزر إضافة محل جديد -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <h2 class="fw-bold mb-0 text-primary">
-            <i class="bi bi-shop-window me-2"></i> المحلات
+            <i class="bi bi-shop-window me-2"></i> إدارة المحلات
         </h2>
-
         <a asp-controller="Store" asp-action="Add"
-           class="btn btn-primary btn-lg fw-bold px-4">
-            <i class="bi bi-plus-circle me-1"></i> إضافة محل جديد
+           class="btn btn-primary btn-lg fw-bold px-4 shadow-sm">
+            <i class="bi bi-plus-circle me-2"></i> إضافة محل جديد
         </a>
     </div>
 
@@ -24,43 +22,65 @@
         @foreach (var store in Model)
         {
             <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 border rounded-3 shadow bg-light">
-
+                <div class="card h-100 border-0 shadow-sm hover-card">
                     <div class="card-body">
-                        <h5 class="fw-bold mb-1 text-primary">
-                            <i class="bi bi-shop me-1"></i> @store.Title
-                        </h5>
-
-                        <p class="text-muted small mb-3">
-                            <i class="bi bi-geo-alt me-1"></i> @store.Location
-                        </p>
-                    </div>
-
-                    <div class="card-footer bg-white border-0 pt-0">
-                        <div class="d-flex gap-2">
-                            <a asp-action="Update" asp-route-Id="@store.Id"
-                               class="btn btn-outline-primary btn-sm flex-fill"
-                               title="تعديل">
-                                <i class="bi bi-pencil-square"></i> تعديل
-                            </a>
-
-                            <a asp-action="Delete" asp-route-Id="@store.Id"
-                               class="btn btn-outline-danger btn-sm flex-fill"
-                               title="حذف">
-                                <i class="bi bi-trash"></i> حذف
-                            </a>
-
-                            <a asp-controller="Store" asp-action="ShowInvoices"
-                               asp-route-Id="@store.Id"
-                               class="btn btn-outline-secondary btn-sm flex-fill"
-                               title="عرض الفواتير">
-                                <i class="bi bi-receipt"></i> فواتير
-                            </a>
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-shop fs-4 text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="fw-bold mb-1">@store.Title</h5>
+                                <p class="text-muted small mb-0">
+                                    <i class="bi bi-geo-alt me-1"></i> @store.Location
+                                </p>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="card-footer bg-white border-0 pt-0 pb-3">
+                        <div class="d-grid gap-2">
+                            <!-- طلبات الهدايا -->
+                            <a asp-controller="Store" asp-action="Gifts"
+                               asp-route-Id="@store.Id"
+                               class="btn btn-success btn-sm">
+                                <i class="bi bi-gift-fill me-2"></i> طلبات الهدايا
+                            </a>
+
+                            <div class="d-flex gap-2">
+                                <!-- الفواتير -->
+                                <a asp-controller="Store" asp-action="ShowInvoices"
+                                   asp-route-Id="@store.Id"
+                                   class="btn btn-outline-secondary btn-sm flex-fill">
+                                    <i class="bi bi-receipt me-1"></i> فواتير
+                                </a>
+
+                                <!-- تعديل -->
+                                <a asp-action="Update" asp-route-Id="@store.Id"
+                                   class="btn btn-outline-primary btn-sm flex-fill">
+                                    <i class="bi bi-pencil-square me-1"></i> تعديل
+                                </a>
+
+                                <!-- حذف -->
+                                <a asp-action="Delete" asp-route-Id="@store.Id"
+                                   class="btn btn-outline-danger btn-sm flex-fill">
+                                    <i class="bi bi-trash me-1"></i> حذف
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         }
     </div>
 </div>
+
+<style>
+    .hover-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+        }
+</style>

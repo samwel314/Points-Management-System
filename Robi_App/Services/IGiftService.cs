@@ -17,5 +17,8 @@ namespace Robi_App.Services
         Task<bool> IsReqestedBefore(int giftId, string userId);
         Task<IEnumerable<ClientRequestsVM>> ClientRequstedGifts(string userId);
         Task<bool> DeleteGiftRequest(int id, string userIid);
+
+        Task<int> AvailablePoints(string userId); 
+        int GetGiftPoints(int giftId);  
     }
 }

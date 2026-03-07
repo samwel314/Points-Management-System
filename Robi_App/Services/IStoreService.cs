@@ -13,6 +13,7 @@ namespace Robi_App.Services
         bool StoreExists(int id);
         char? GetStoreChar (int id);
 
-        ShowStoreInvoicesVM ShowStoreInvoicesVM(int id);  
+        ShowStoreInvoicesVM ShowStoreInvoicesVM(int id);
+        Task<StoreGiftRequestVM> ShowStoreGifts(int id);
     }
 }

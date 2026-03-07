@@ -143,15 +143,20 @@ namespace Robi_App.Controllers
 
             var userIid = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
             model.UserId = userIid;
-            if (await _giftService.IsReqestedBefore(model.GiftId , model.UserId))
+            var userPoints = await _giftService.AvailablePoints(userIid);  
+            var giftPoints =  _giftService.GetGiftPoints(model.GiftId);
+            if (giftPoints == 0) // الهدية مش موجودة
             {
-                TempData["Message"] = "  لقد قمت بطلب هذه الهدية من قبل الرجاء اختيار هدية أخرى ";
-                return RedirectToAction("Error", "Home", new
-                {
-                    statusCode = 400
-                });
-
+                TempData["Message"] = "الهدية غير موجودة";
+                return RedirectToAction("Error", "Home", new { statusCode = 404 });
             }
+
+            if (userPoints < giftPoints)
+            {
+                TempData["Message"] = "لا تمتلك عدد كافٍ من النقاط";
+                return RedirectToAction("Error", "Home", new { statusCode = 400 });
+            }
+
             var isDone = await _giftService.AddGiftRequest(model); 
             if (!isDone)
             {
@@ -161,8 +166,7 @@ namespace Robi_App.Controllers
                     statusCode = 400
                 });
             }
-            return RedirectToAction("RequestSuccess", "Home"); 
- ;
+            return RedirectToAction("RequestSuccess", "Home");
         }
         [Authorize(policy: SD.Role_Client)]
 

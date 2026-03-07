@@ -35,6 +35,13 @@ namespace Robi_App.Services.Implementation
             return true;
         }
 
+        public async Task<int> AvailablePoints(string userId)
+        {
+            var total = await _db.Invoices.Where(i => i.UserId == userId).SumAsync(i => i.Points);
+            var used = await _db.GiftRequests.Where(gr => gr.UserId == userId).SumAsync(gr => gr.Gift.Points);
+            return total - used;    
+        }
+
         public async Task<IEnumerable<ClientRequestsVM>> ClientRequstedGifts(string userId)
         {
             return await _db.GiftRequests.Where(gr => gr.UserId == userId).
@@ -94,6 +101,12 @@ namespace Robi_App.Services.Implementation
                 ImagePath = g.ImagePath,
                 points = g.Points,
             }).ToList();
+        }
+
+        public int GetGiftPoints(int giftId)
+        {
+            var gift = _db.Gifts.FirstOrDefault(g => g.Id == giftId);
+            return gift == null ? 0 : gift.Points;
         }
 
         public bool HaveGiftWithName(string name)

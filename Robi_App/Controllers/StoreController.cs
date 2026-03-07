@@ -53,7 +53,7 @@ namespace Robi_App.Controllers
             var store = _service.GetStoreById(id , false);
             if (store is null)
             {
-                TempData["Message"] = "Sorry ! This Store Not Found";
+                TempData["Message"] = "هذا الفرع غير موجود ";
                 return RedirectToAction("Error", "Home", new
                 {
                     statusCode = 404
@@ -70,7 +70,7 @@ namespace Robi_App.Controllers
             
             if ( !_service.StoreExists(store.Id))
             {
-                TempData["Message"] = "Sorry ! This Store Not Found";
+                TempData["Message"] = "هذا الفرع غير موجود ";
                 return RedirectToAction("Error", "Home" ,  new
                 {
                     statusCode = 404
@@ -85,7 +85,7 @@ namespace Robi_App.Controllers
             var store = _service.GetStoreById(id, false);
             if (store is null)
             {
-                TempData["Message"] = "Sorry ! This Store Not Found";
+                TempData["Message"] = "هذا الفرع غير موجود ";
                 return RedirectToAction("Error", "Home", new
                 {
                     statusCode = 404
@@ -101,7 +101,7 @@ namespace Robi_App.Controllers
         
             if (!_service.StoreExists(store.Id))
             {
-                TempData["Message"] = "Sorry ! This Store Not Found";
+                TempData["Message"] = "هذا الفرع غير موجود ";
                 return RedirectToAction("Error", "Home", new
                 {
                     statusCode = 404
@@ -116,7 +116,7 @@ namespace Robi_App.Controllers
             var store = _service.ShowStoreInvoicesVM(Id);   
             if (store is null)
             {
-                TempData["Message"] = "Sorry ! This Store Not Found";
+                TempData["Message"] = "هذا الفرع غير موجود ";
                 return RedirectToAction("Error", "Home" , new {});
             }
 
@@ -124,6 +124,16 @@ namespace Robi_App.Controllers
             return View(store);  
         }
 
+        public async Task<IActionResult> Gifts (int Id)
+        {
+             var store = await _service.ShowStoreGifts (Id);
+            if (store is null)
+            {
+                TempData["Message"] = "هذا الفرع غير موجود ";
+                return RedirectToAction("Error", "Home", new { });
+            }
+            return View(store);
+        }
         private char GetNextChar ()
         {
             char S_char =  ' ';

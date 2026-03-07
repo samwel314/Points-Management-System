@@ -15,21 +15,21 @@ namespace Robi_App.Services.Implementation
 
         public void AddStore(Store store)
         {
-            _db.Stores.Add(store);   
-            _db.SaveChanges();  
+            _db.Stores.Add(store);
+            _db.SaveChanges();
         }
 
         public void DeleteStore(Store store)
         {
             _db.Stores.Remove(store);
-            _db.SaveChanges();  
+            _db.SaveChanges();
         }
 
-        public Store ? GetStoreById(int id , bool tracking)
+        public Store? GetStoreById(int id, bool tracking)
         {
-            if(!tracking)
-                return _db.Stores.AsNoTracking().FirstOrDefault(s=>s.Id == id);    
-            return _db.Stores.Find(id); 
+            if (!tracking)
+                return _db.Stores.AsNoTracking().FirstOrDefault(s => s.Id == id);
+            return _db.Stores.Find(id);
         }
 
         public IEnumerable<Store> GetStores(bool tracking)
@@ -39,18 +39,18 @@ namespace Robi_App.Services.Implementation
             {
                 query = query.AsNoTracking();
             }
-            return query.ToList();  
+            return query.ToList();
         }
 
         public bool StoreExists(int id)
         {
-            return _db.Stores.Any(s => s.Id == id); 
+            return _db.Stores.Any(s => s.Id == id);
         }
 
         public void UpdateStore(Store store)
         {
-            _db.Stores.Update(store);           
-            _db.SaveChanges();  
+            _db.Stores.Update(store);
+            _db.SaveChanges();
         }
         public ShowStoreInvoicesVM ShowStoreInvoicesVM(int id)
         {
@@ -61,19 +61,54 @@ namespace Robi_App.Services.Implementation
             var firstDayOfNextMonth = firstDayOfMonth.AddMonths(1);
             return new ShowStoreInvoicesVM()
             {
-                Id = id,    
-                StoreName = store.Title , 
-                TotalInvoices = _db.Invoices.Where(i=>i.StoreId == id).Count(),
+                Id = id,
+                StoreName = store.Title,
+                TotalInvoices = _db.Invoices.Where(i => i.StoreId == id).Count(),
                 TotalToDayInvoices = _db.Invoices.
                 Where(i => i.StoreId == id && i.CreatedAt == DateOnly.FromDateTime(DateTime.Now)).Count(),
-                TotalToMonthInvoices = _db.Invoices.Where(i => i.StoreId == id && i.CreatedAt >= firstDayOfMonth && i.CreatedAt < firstDayOfNextMonth ).Count(),
-            }; 
+                TotalToMonthInvoices = _db.Invoices.Where(i => i.StoreId == id && i.CreatedAt >= firstDayOfMonth && i.CreatedAt < firstDayOfNextMonth).Count(),
+            };
         }
 
         public char? GetStoreChar(int id)
         {
             return _db.Stores.Where(s => s.Id == id)
-                .Select(s =>s.S_char).SingleOrDefault(); 
+                .Select(s => s.S_char).SingleOrDefault();
+        }
+
+        public async Task<StoreGiftRequestVM?> ShowStoreGifts(int id)
+        {
+            var store = await _db.Stores
+                .AsNoTracking()
+                .Where(s => s.Id == id)
+                .Select(s => new { s.Id, s.Title })
+                .FirstOrDefaultAsync();
+
+            if (store == null)
+                return null;
+
+            var requests = await _db.GiftRequests
+                .AsNoTracking()
+                .Where(g => g.StoreId == id)
+                .Select(g => new GiftRequestVM
+                {
+                    Id = g.Id,
+                    GiftName = g.Gift.Name,
+                    GiftPoints = g.Gift.Points,
+                    IsApproved = g.IsApproved,
+                    CustomerPhone = g.User.UserName!,
+                    CustomerName = g.User.FullName!,
+                    RequestDate = g.CreatedAt,
+                    Notes = g.Notes ?? "لا يوجد"
+                })
+                .ToListAsync();
+
+            return new StoreGiftRequestVM
+            {
+                Id = store.Id,
+                Title = store.Title,
+                giftRequests = requests
+            };
         }
     }
 }
