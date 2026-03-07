@@ -56,30 +56,33 @@
                                 <p class="mb-0 text-muted fs-6"><i class="bi bi-calendar-event me-2"></i> التاريخ: @info.Date</p>
                             </div>
 
-                            <div class="d-grid mt-3">
-                                <button class="btn btn-outline-primary fw-bold" data-bs-toggle="modal"
+                            <div class="d-flex gap-2 mt-3">
+                                <button class="btn btn-outline-primary fw-bold flex-fill" data-bs-toggle="modal"
                                         data-bs-target="#@(idCount)editPointsModal">
                                     <i class="bi bi-pencil-square me-2"></i> تعديل النقاط
+                                </button>
+                                <button class="btn btn-outline-secondary fw-bold flex-fill" data-bs-toggle="modal"
+                                        data-bs-target="#@(idCount)editImageModal">
+                                    <i class="bi bi-image me-2"></i> تغيير الصورة
                                 </button>
                             </div>
 
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal: تعديل النقاط -->
                 <div class="modal fade" id="@(idCount)editPointsModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-
-                            <div class="modal-header text-center">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <div class="modal-header">
                                 <h5 class="modal-title fw-bold">
                                     <i class="bi bi-pencil-square me-2"></i> تعديل نقاط الفاتورة
                                 </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
                             <div class="modal-body">
-
-                                <!-- صورة الفاتورة للعرض فقط -->
                                 @if (!string.IsNullOrEmpty(info.ImagePath))
                                 {
                                     <div class="text-center mb-3">
@@ -93,7 +96,6 @@
                                     <p class="text-muted text-center mb-3">لا توجد صورة مرفوعة</p>
                                 }
 
-                                <!-- الفورم لتعديل النقاط -->
                                 <form method="post" asp-action="UpdatePoints" asp-route-url="@(Context.Request.Path + Context.Request.QueryString)" id="@info.Id">
                                     <input name="Id" value="@info.Id" hidden />
 
@@ -117,18 +119,60 @@
                                         <input type="number" name="Points" value="@info.Points" class="form-control fw-bold" min="0">
                                     </div>
 
-                                    <div class="modal-footer d-grid">
+                                    <div class="d-grid">
                                         <button type="submit" class="btn btn-success fw-bold">
                                             <i class="bi bi-check-circle me-2"></i> حفظ النقاط
                                         </button>
                                     </div>
                                 </form>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal: تغيير الصورة -->
+                <div class="modal fade" id="@(idCount)editImageModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title fw-bold">
+                                    <i class="bi bi-image me-2"></i> تغيير صورة الفاتورة
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <!-- عرض الصورة الحالية -->
+                                @if (!string.IsNullOrEmpty(info.ImagePath))
+                                {
+                                    <div class="text-center mb-3">
+                                        <p class="text-muted small mb-2">الصورة الحالية:</p>
+                                        <img src="~/InvoicesImages/@info.ImagePath"
+                                             class="img-fluid rounded shadow-sm"
+                                             style="max-height:200px; object-fit:cover;" />
+                                    </div>
+                                }
+
+                                <form method="post" asp-action="SysUpdateImage" enctype="multipart/form-data" >
+                                    <input name="Id" value="@info.Id" hidden />
+                                    <input name="url" value="@(Context.Request.Path)" hidden />
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold"><i class="bi bi-file-earmark-image me-2"></i> اختر صورة جديدة</label>
+                                        <input type="file" name="Image" class="form-control" accept="image/*" required>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary fw-bold">
+                                            <i class="bi bi-upload me-2"></i> رفع الصورة الجديدة
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 idCount++;
             }
         </div>

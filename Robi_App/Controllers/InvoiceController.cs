@@ -15,11 +15,11 @@ namespace Robi_App.Controllers
 
     public class InvoiceController : Controller
     {
-        private readonly IStoreService _storeService; 
+        private readonly IStoreService _storeService;
         private readonly IInvoiceService _invoiceService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly IWebHostEnvironment _environment; 
-        public InvoiceController(IStoreService storeService, IInvoiceService invoiceService, IAuthorizationService authorizationService , IWebHostEnvironment environment)
+        private readonly IWebHostEnvironment _environment;
+        public InvoiceController(IStoreService storeService, IInvoiceService invoiceService, IAuthorizationService authorizationService, IWebHostEnvironment environment)
         {
             _storeService = storeService;
             _invoiceService = invoiceService;
@@ -36,7 +36,7 @@ namespace Robi_App.Controllers
                 invoices = _invoiceService.showInvoices(User, i => i.Points == 0);
                 TempData["txt"] = "<b> فواتير لا تحتوي علي نقاط </b>";
             }
-            else if (filter ==  SD.hasPoints)
+            else if (filter == SD.hasPoints)
             {
                 invoices = _invoiceService.showInvoices(User, i => i.Points != 0);
                 TempData["txt"] = "<b> فواتير تحتوي علي نقاط</b>";
@@ -51,10 +51,10 @@ namespace Robi_App.Controllers
         [Authorize(policy: "AdminOrEmployee")]
 
         [HttpPost]
-        public async Task<IActionResult> UpdatePoints(ShowInvoiceVM model, string url = null! )
+        public async Task<IActionResult> UpdatePoints(ShowInvoiceVM model, string url = null!)
         {
-            var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true); 
-            if (invoicefromDB is null  )
+            var invoicefromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true);
+            if (invoicefromDB is null)
             {
                 TempData["Message"] = "! هذه الفاتورة غير موجود ";
                 return RedirectToAction("Error", "Home", new
@@ -62,39 +62,39 @@ namespace Robi_App.Controllers
                     statusCode = 404
                 });
             }
-            var result = await _authorizationService.AuthorizeAsync(User, invoicefromDB, "CanUpdateInvoicePoints"); 
+            var result = await _authorizationService.AuthorizeAsync(User, invoicefromDB, "CanUpdateInvoicePoints");
             if (!result.Succeeded)
                 return new ForbidResult();
 
             if (model.Points < 0)
                 return RedirectToAction("Index");
 
-            invoicefromDB.Points = model.Points;    
+            invoicefromDB.Points = model.Points;
             _invoiceService.Save();
             if (url != null)
-                return Redirect(url); 
+                return Redirect(url);
             //**** 
-          return RedirectToAction ("Index" , new { filter  = SD.hasPoints} );  
+            return RedirectToAction("Index", new { filter = SD.hasPoints });
         }
         // Client 
         [Authorize(policy: SD.Role_Client)]
-        public IActionResult Create() 
+        public IActionResult Create()
         {
             CreateInvoiceVM viewModel = new CreateInvoiceVM()
             {
                 Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
                 {
                     Value = s.Id.ToString(),
-                    Text = s.Title, 
-                }).ToList(),    
-            };  
+                    Text = s.Title,
+                }).ToList(),
+            };
             return View(viewModel);
         }
         [Authorize(policy: SD.Role_Client)]
         [HttpPost]
-        public async Task<IActionResult> Create (CreateInvoiceVM model)
+        public async Task<IActionResult> Create(CreateInvoiceVM model)
         {
-            char? storeChar = _storeService.GetStoreChar(model.StoreId); 
+            char? storeChar = _storeService.GetStoreChar(model.StoreId);
             if (storeChar == null)
             {
                 TempData["Message"] = "هذا الفرع غير متاح  ";
@@ -103,8 +103,8 @@ namespace Robi_App.Controllers
                     statusCode = 404
                 });
             }
-            model.Code = $"{storeChar}-{model.Code}"; 
-            bool isExisting = _invoiceService.IsCodeExisting(model.Code); 
+            model.Code = $"{storeChar}-{model.Code}";
+            bool isExisting = _invoiceService.IsCodeExisting(model.Code);
             if (!ModelState.IsValid || isExisting)
             {
                 model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
@@ -116,32 +116,32 @@ namespace Robi_App.Controllers
                     ModelState.AddModelError("Code", "   كود الفاتورة غير صالح    ");
                 return View(model);
             }
-            var path = Path.Combine(_environment.WebRootPath , "InvoicesImages");
+            var path = Path.Combine(_environment.WebRootPath, "InvoicesImages");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Image.FileName);
             var filePath = Path.Combine(path, fileName);
-            using var stream = new FileStream(filePath , FileMode.Create); 
-            await model.Image.CopyToAsync (stream);   
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await model.Image.CopyToAsync(stream);
             // ***
-            model.UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value; 
-            model.ImagePath = fileName; 
+            model.UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            model.ImagePath = fileName;
             _invoiceService.CreateInvoice(model);
             // will change it soon to UserInvoices
-            return RedirectToAction("index" , "Customer"); 
+            return RedirectToAction("index", "Customer");
         }
         [Authorize(policy: SD.Role_Client)]
-        public async Task<IActionResult> Update (int Id)
+        public async Task<IActionResult> Update(int Id)
         {
-            var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(Id , false);
+            var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(Id, false);
             // her all users can update we will implement resource-based
             // Authorization
-            if (invoiceFromDB is null     )
+            if (invoiceFromDB is null)
             {
                 TempData["Message"] = "! هذه الفاتورة غير موجود ";
-                return RedirectToAction("Error", "Home" , new 
+                return RedirectToAction("Error", "Home", new
                 {
                     statusCode = 404
                 });
@@ -151,14 +151,14 @@ namespace Robi_App.Controllers
                 .AuthorizeAsync(User, invoiceFromDB, "CanUpdateInvoice");
             if (!authResult.Succeeded)
             {
-                return new ForbidResult(); 
+                return new ForbidResult();
             }
             UpdateInvoiceVM viewModel = new UpdateInvoiceVM()
             {
-                Id = Id,    
-                Code = invoiceFromDB.Code.Remove(0 , 2),  
-                UserId = invoiceFromDB.UserId ,
-                StoreId = invoiceFromDB.StoreId ,
+                Id = Id,
+                Code = invoiceFromDB.Code.Remove(0, 2),
+                UserId = invoiceFromDB.UserId,
+                StoreId = invoiceFromDB.StoreId,
                 Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
                 {
                     Value = s.Id.ToString(),
@@ -168,11 +168,11 @@ namespace Robi_App.Controllers
             return View(viewModel);
         }
         [Authorize(policy: SD.Role_Client)]
-        [HttpPost] 
-        public async Task<IActionResult> Update (UpdateInvoiceVM model)
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateInvoiceVM model)
         {
-            
-            var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(model.Id , true);
+
+            var invoiceFromDB = _invoiceService.GetInvoiceToUpdate(model.Id, true);
 
             if (!ModelState.IsValid || invoiceFromDB is null)
             {
@@ -184,12 +184,12 @@ namespace Robi_App.Controllers
                         statusCode = 404
                     });
                 }
-                               model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
+                model.Stores = _storeService.GetStores(false).Select(s => new SelectListItem()
                 {
                     Value = s.Id.ToString(),
                     Text = s.Title,
                 }).ToList();
-                return View(model); 
+                return View(model);
             }
             var authResult = await _authorizationService
               .AuthorizeAsync(User, invoiceFromDB, "CanUpdateInvoice");
@@ -220,7 +220,7 @@ namespace Robi_App.Controllers
                     }).ToList();
                     return View(model);
                 }
-              
+
             }
             invoiceFromDB.Code = model.Code;
             invoiceFromDB.StoreId = model.StoreId;
@@ -228,9 +228,38 @@ namespace Robi_App.Controllers
             invoiceFromDB.IsReviewed = false;
             _invoiceService.Save();
 
-            return RedirectToAction("Index" , "Customer"); 
+            return RedirectToAction("Index", "Customer");
         }
+        [HttpPost]
+        [Authorize(policy: "AdminOrEmployee")]
 
+        public async Task<IActionResult> SysUpdateImage(int Id, IFormFile Image, string url)
+        {
+            var oldPath = _invoiceService.GetImagePath(Id, null!);
+            if (oldPath == null)
+            {
+                TempData["Message"] = "هذا الفاتورة غير موجودة  ";
+                return RedirectToAction("Error", "Home", new
+                {
+                    statusCode = 404
+                });
+            }
+            var path = Path.Combine(_environment.WebRootPath, "InvoicesImages", oldPath);
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            path = Path.Combine(_environment.WebRootPath, "InvoicesImages");
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+            var filePath = Path.Combine(path, fileName);
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await Image.CopyToAsync(stream);
+            _invoiceService.UpdateImage(Id, fileName);
+            // ***
+            if (url is not null)
+                return Redirect(url);
+            return RedirectToAction("Index", "Home");
+        }
 
         [Authorize(policy: SD.Role_Admin)]
 
@@ -244,14 +273,20 @@ namespace Robi_App.Controllers
         public async Task<IActionResult> ResetYearPost()
         {
             await _invoiceService.RestYear();
-            return RedirectToAction("Index", "Home"); 
+            var path = Path.Combine(_environment.WebRootPath, "InvoicesImages");
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
         [Authorize(policy: SD.Role_Client)]
         [HttpPost]
-        public async Task<IActionResult> UpdateImage (int Id , IFormFile NewImage , string url)
+        public async Task<IActionResult> UpdateImage(int Id, IFormFile NewImage, string url)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            var oldPath = _invoiceService.GetImagePath(Id , userId);
+            var oldPath = _invoiceService.GetImagePath(Id, userId);
             if (oldPath == null)
             {
                 TempData["Message"] = "هذا الفاتورة غير موجودة  ";
@@ -260,7 +295,7 @@ namespace Robi_App.Controllers
                     statusCode = 404
                 });
             }
-            var path = Path.Combine(_environment.WebRootPath, "InvoicesImages" , oldPath);
+            var path = Path.Combine(_environment.WebRootPath, "InvoicesImages", oldPath);
             if (System.IO.File.Exists(path))
             {
                 System.IO.File.Delete(path);
@@ -270,9 +305,9 @@ namespace Robi_App.Controllers
             var filePath = Path.Combine(path, fileName);
             using var stream = new FileStream(filePath, FileMode.Create);
             await NewImage.CopyToAsync(stream);
-           _invoiceService.UpdateImage(Id , fileName);
+            _invoiceService.UpdateImage(Id, fileName);
             // ***
-            if (url is not null )
+            if (url is not null)
                 return Redirect(url);
             return RedirectToAction("Index", "Home");
         }

@@ -55,9 +55,13 @@ namespace Robi_App.Services.Implementation
             return data;
         }
 
-        public string ? GetImagePath(int id , string userId)
+        public string ? GetImagePath(int id , string userId )
         {
-            var invoice = _db.Invoices.FirstOrDefault(i => i.Id == id && i.UserId == userId); 
+            Invoice ? invoice;
+            if (userId != null)
+                invoice = _db.Invoices.FirstOrDefault(i => i.Id == id && i.UserId == userId);
+            else
+                invoice = invoice = _db.Invoices.FirstOrDefault(i => i.Id == id); 
             return invoice is not null ? invoice.ImagePath : null;
         }
 
