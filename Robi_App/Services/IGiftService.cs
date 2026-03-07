@@ -16,9 +16,10 @@ namespace Robi_App.Services
         Task<bool> AddGiftRequest(RequestGiftViewModel model); 
         Task<bool> IsReqestedBefore(int giftId, string userId);
         Task<IEnumerable<ClientRequestsVM>> ClientRequstedGifts(string userId);
-        Task<bool> DeleteGiftRequest(int id, string userIid);
+        Task<bool> DeleteGiftRequest(int id, string userIid  = null! );
 
         Task<int> AvailablePoints(string userId); 
-        int GetGiftPoints(int giftId);  
+        int GetGiftPoints(int giftId);
+        Task<bool> ChangeAvailability(int id);
     }
 }

@@ -88,7 +88,7 @@
                                             <!-- Toggle Availability -->
                                             <form method="post" asp-action="ToggleAvailability" class="d-inline">
                                                 <input type="hidden" name="Id" value="@request.Id" />
-                                                <input type="hidden" name=" Url" value="@Context.Request.Path" />
+                                                <input type="hidden" name="Url" value="@Context.Request.Path" />
 
                                                 @if (request.IsApproved)
                                                 {
@@ -123,8 +123,10 @@
                                                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                                     هل أنت متأكد من حذف هذا الطلب؟
                                                 </p>
-                                                <form method="post" asp-action="DeleteRequest" class="d-inline">
+                                                <form method="post" asp-action="DeleteGiftRequest" class="d-inline">
                                                     <input type="hidden" name="Id" value="@request.Id" />
+                                                    <input type="hidden" name="Url" value="@Context.Request.Path" />
+
                                                     <div class="d-flex gap-2">
                                                         <button type="submit" class="btn btn-danger btn-sm flex-fill">
                                                             نعم، احذف

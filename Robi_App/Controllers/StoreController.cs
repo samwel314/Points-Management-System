@@ -13,11 +13,13 @@ namespace Robi_App.Controllers
     {
         private readonly IStoreService _service;
         private readonly IInvoiceService _invoiceService;
+        private readonly IGiftService _giftService;
 
-        public StoreController(IStoreService service, IInvoiceService invoiceService)
+        public StoreController(IStoreService service, IInvoiceService invoiceService, IGiftService giftService)
         {
             _service = service;
             _invoiceService = invoiceService;
+            _giftService = giftService;
         }
 
         public IActionResult Index()
@@ -133,6 +135,34 @@ namespace Robi_App.Controllers
                 return RedirectToAction("Error", "Home", new { });
             }
             return View(store);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ToggleAvailability (int id , string Url )
+        {
+            var IsChanged = await _giftService.ChangeAvailability(id); 
+            if (!IsChanged)
+            {
+                TempData["Message"] = "هذا الطلب غير موجود ";
+                return RedirectToAction("Error", "Home", new { });
+            }
+            if (Url is null)
+              return  RedirectToAction("Index");
+
+            return Redirect(Url); 
+        }
+
+        public async Task<IActionResult> DeleteGiftRequest (int Id  , string Url )
+        {
+            var IsDeleted = await _giftService.DeleteGiftRequest(Id);
+            if (!IsDeleted)
+            {
+                TempData["Message"] = "هذا الطلب غير موجود ";
+                return RedirectToAction("Error", "Home", new { });
+            }
+            if (Url is null)
+                return RedirectToAction("Index");
+
+            return Redirect(Url);
         }
         private char GetNextChar ()
         {

@@ -42,6 +42,16 @@ namespace Robi_App.Services.Implementation
             return total - used;    
         }
 
+        public async Task<bool> ChangeAvailability(int id)
+        {
+            var gift = await _db.GiftRequests.FindAsync(id);
+            if (gift == null) return false;
+
+            gift.IsApproved = !gift.IsApproved;
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<IEnumerable<ClientRequestsVM>> ClientRequstedGifts(string userId)
         {
             return await _db.GiftRequests.Where(gr => gr.UserId == userId).
@@ -82,10 +92,13 @@ namespace Robi_App.Services.Implementation
             return true;
         }
 
-        public async Task<bool> DeleteGiftRequest(int id, string userIid)
+        public async Task<bool> DeleteGiftRequest(int id, string userIid = null)
         {
-            var giftRequest = await _db.GiftRequests.FirstOrDefaultAsync(gr => gr.Id == id && gr.UserId == userIid);
+            var giftRequest = await _db.GiftRequests.
+                FirstOrDefaultAsync(gr => gr.Id == id );
             if (giftRequest == null)
+                return false; 
+            if (!string.IsNullOrEmpty(userIid) && giftRequest.UserId != userIid)
                 return false;
             _db.GiftRequests.Remove(giftRequest);
            await _db.SaveChangesAsync(); 
