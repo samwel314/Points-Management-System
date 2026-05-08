@@ -1,6 +1,6 @@
 # اعتبار ملفات الـ Razor كأنها C# أو إخفائها من الإحصائيات
 *.razor linguist-language=CSharp
-*.html linguist-detectable=false
+
 *.css linguist-detectable=false
 *.js linguist-detectable=false
 
